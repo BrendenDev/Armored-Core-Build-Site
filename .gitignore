@@ -1,2 +1,36 @@
-.env
-config.json
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+/ac-build-site/node_modules
+.pnp
+.pnp.js
+
+# testing
+/coverage
+
+# next.js
+/.next/
+/ac-build-site/out/
+
+# production
+/ac-build-site/build
+
+# misc
+.DS_Store
+*.pem
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# local env files
+.env*.local
+ac-build-site/config.json
+
+# vercel
+.vercel
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
