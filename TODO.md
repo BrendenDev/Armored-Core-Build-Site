@@ -14,19 +14,22 @@ Note: Completed, organized by database names (Ex. "ACDatabasePreRelease")
 
 - [ ] Add description for all stats
 
+- [ ] Polish UI
+
 - [ ] Feature: Save Builds and Load
 
-- [ ] Paint Jobs and Emblems for Parts
+- [ ] Feature: Paint Jobs and Emblems for Parts
 
-- [ ] Announcements page for blogs and announcement
+- [ ] Page: Announcements page for blogs and announcement
 
-- [ ] Ability to upload and share builds and screenshots
-    - [ ] When people upload/share, make sure all weapon stats are correct
-        - [ ] Ability to chose which version they uploading for
+- [ ] Feature/Page: Ability to upload and share builds and screenshots
+    - [ ] When people upload/share, make sure all weapon stats are correct and formatting is correct
+        - [ ] Ability to chose which patch they uploading for
     - [ ] Filter through builds based on stats
 
 
 ## Future Goals
+- [ ] Move build page off page.js to make room for navigation page or something similar
 - [ ] Animations
 - [ ] Video Previews
 - [ ] Accounts?

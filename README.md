@@ -2,3 +2,4 @@
 - React
 - Next.js
 - MongoDB
+- Tailwind
