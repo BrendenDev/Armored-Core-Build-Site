@@ -15,6 +15,7 @@ Note: Completed, organized by database names (Ex. "ACDatabasePreRelease")
 - [ ] Add description for all stats
 
 - [ ] Polish UI
+    - [ ] Powered by Armored Core Legacy logo
 
 - [ ] Feature: Save Builds and Load
 

@@ -1,15 +1,13 @@
-import Image from 'next/image'
-import Assembly from './building/assembly.js'
-//import { useState } from 'react'; 
+import Assembly from './building/assembly.js';
+
+
 
 export default function Home() {
-  let unit 
-
 
   return (
     <main className="flex min-h-screen flex-row items-start justify-between px-20 py-16 font-agency-fb text-white">
       {/*assembly container*/}
-      <div className="w-1/3 text-2x1"> 
+      <div className="w-1/3 text-2x1 flex-col"> 
         <Assembly />
       </div>
     </main>
