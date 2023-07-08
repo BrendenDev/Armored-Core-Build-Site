@@ -5,8 +5,6 @@
 
 
 ## Project Making
-- [ ] Just a reminder that we need to update currentPart based on what is clicked in menu. Right now it is just ignoring whatever we click in menu and setting to the first part
-
 - [ ] Create app for updating data in database
 
 - [ ] Documentation (for future api)
