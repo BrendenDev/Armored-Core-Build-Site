@@ -1,4 +1,5 @@
 ## Technologies Used
+- Node.js
 - React
 - Next.js
 - MongoDB

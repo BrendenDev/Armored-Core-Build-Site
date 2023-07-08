@@ -1,3 +1,4 @@
+'use client'
 import Assembly from './building/assembly.js';
 
 

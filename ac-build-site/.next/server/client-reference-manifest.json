@@ -40,9 +40,9 @@
         "async": false
       }
     },
-    "(app-client)/./app/building/assembly.js": {
+    "(app-client)/./app/page.js": {
       "*": {
-        "id": "(sc_client)/./app/building/assembly.js",
+        "id": "(sc_client)/./app/page.js",
         "name": "*",
         "chunks": [],
         "async": false
@@ -131,14 +131,6 @@
       ],
       "async": false
     },
-    "C:\\Users\\17204\\Desktop\\Desktop\\DevStuff\\Armored-Core-Build-Site\\ac-build-site\\app\\building\\assembly.js": {
-      "id": "(app-client)/./app/building/assembly.js",
-      "name": "*",
-      "chunks": [
-        "app/page:static/chunks/app/page.js"
-      ],
-      "async": false
-    },
     "C:\\Users\\17204\\Desktop\\Desktop\\DevStuff\\Armored-Core-Build-Site\\ac-build-site\\node_modules\\next\\font\\google\\target.css?{\"path\":\"app\\\\layout.js\",\"import\":\"Inter\",\"arguments\":[{\"subsets\":[\"latin\"]}],\"variableName\":\"inter\"}": {
       "id": "(app-client)/./node_modules/next/font/google/target.css?{\"path\":\"app\\\\layout.js\",\"import\":\"Inter\",\"arguments\":[{\"subsets\":[\"latin\"]}],\"variableName\":\"inter\"}",
       "name": "*",
@@ -154,12 +146,20 @@
         "app/layout:static/chunks/app/layout.js"
       ],
       "async": false
+    },
+    "C:\\Users\\17204\\Desktop\\Desktop\\DevStuff\\Armored-Core-Build-Site\\ac-build-site\\app\\page.js": {
+      "id": "(app-client)/./app/page.js",
+      "name": "*",
+      "chunks": [
+        "app/page:static/chunks/app/page.js"
+      ],
+      "async": false
     }
   },
   "entryCSSFiles": {
-    "C:\\Users\\17204\\Desktop\\Desktop\\DevStuff\\Armored-Core-Build-Site\\ac-build-site\\app\\page": [],
     "C:\\Users\\17204\\Desktop\\Desktop\\DevStuff\\Armored-Core-Build-Site\\ac-build-site\\app\\layout": [
       "static/css/app/layout.css"
-    ]
+    ],
+    "C:\\Users\\17204\\Desktop\\Desktop\\DevStuff\\Armored-Core-Build-Site\\ac-build-site\\app\\page": []
   }
 }

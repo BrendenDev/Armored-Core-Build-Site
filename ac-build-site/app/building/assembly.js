@@ -1,6 +1,6 @@
 'use client'
 import { useState, useEffect } from 'react';
-import { connectDB } from './partassembly.js'
+import { connectDB, preloadPartData } from './db.js'
 
 function PartsOverview({ category, parts, handleClick }) { //category = unit, frame, inner, or expansion
 
@@ -12,7 +12,7 @@ function PartsOverview({ category, parts, handleClick }) { //category = unit, fr
 
     const partElements = parts.map( (part, index) => {
         return (
-            <div key={index} className="my-[0.15rem] border-2 border-[rgb(52,64,80)] bg-[rgb(54,72,97)] hover:bg-[rgb(120,148,162)]" onClick={() => handleClick(category)}> {/* change hover to gradient please */}
+            <div key={index} className="my-[0.15rem] border-2 border-[rgb(52,64,80)] bg-[rgb(54,72,97)] hover:bg-[rgb(120,148,162)]" onClick={() => handleClick(category, part)}> {/* change hover to gradient please */}
                 <h1 className="pl-10 py-2">{part}</h1>
             </div>
         );
@@ -30,9 +30,7 @@ function PartsOverview({ category, parts, handleClick }) { //category = unit, fr
     );
 }
 
-function PartsSelector({ category, parts }) {
-
-    const [currentPart, setCurrentPart] = useState(parts[0]);
+function PartsSelector({ category, parts, handleClick, currentSelect }) {
 
     const partHeader = (
         <div className="text-2x1 pb-2"> 
@@ -40,12 +38,8 @@ function PartsSelector({ category, parts }) {
         </div>
     );
 
-    function handleClick(newPart) {
-        setCurrentPart(newPart);
-    }
-
     const partElements = parts.map( (part, index) => {
-        if(part === currentPart) {
+        if(part === currentSelect) {
             return (
                 <div key={index} className="flex-grow basis-0 bg-[rgb(120,148,162)]" onClick={() => handleClick(part)}> {/* change hover to gradient please */}
                     <h1 className="py-2 text-center">{part}</h1>
@@ -54,7 +48,7 @@ function PartsSelector({ category, parts }) {
         }
         else {
             return (
-                <div key={index} className="flex-grow basis-0 bg-[rgb(35,50,67)] hover:bg-[rgb(120,148,162)]" onClick={() => handleClick(part)}> {/* change hover to gradient please */}
+                <div key={index} className="flex-grow basis-0 bg-[rgb(35,50,67)] hover:bg-[rgb(120,148,162)]" onClick={() => handleClick(part)}>
                     <h1 className="py-2 text-center">{part}</h1>
                 </div> 
             );
@@ -75,16 +69,30 @@ function PartsSelector({ category, parts }) {
     );
 }
 
-export function PartsBuilder() {
+//<RetrieveParts />
+
+export function PartsBuilder({ currentSelect, currentMenu }) {
+
+    const [renderedData, setRenderedData] = useState([]);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const data = await preloadPartData(currentSelect, currentMenu);
+            setRenderedData(data);
+        }
+
+        fetchData();
+    }, [currentSelect]);
+
     return(
-        <div className="w-64 h-64 border border-gray-300 rounded overflow-hidden">
-            <div className="overflow-y-auto">
+        <div className="w-full border border-gray-300 rounded overflow-hidden">
+            <div className="overflow-y-auto h-full max-h-[75vh]">
                 <ul className="list-none p-0">
-                    {/* Render your selection items here */}
-                    <li className="py-2 px-4">Item 1</li>
-                    <li className="py-2 px-4">Item 2</li>
-                    <li className="py-2 px-4">Item 3</li>
-                    {/* ... */}
+                    {
+                        renderedData.map((item, index) => (
+                            <li key={index} className="text-center py-20">{item}</li>
+                        ))
+                    }
                 </ul>
             </div>
         </div>
@@ -95,7 +103,7 @@ export default function Assembly() {
 
     useEffect(() => {
         connectDB()
-    });
+    }, []);
 
     const partCategories = [
         {
@@ -118,12 +126,20 @@ export default function Assembly() {
 
     //eventually change these to localstorage so we can keep the person's last state
 
+    const [currentSelect, setcurrentSelect] = useState("");
+
+    function changePart(newPart) {
+        setcurrentSelect(newPart);
+    }
+
     const [menu, setMenu] = useState('default');
 
-    function changeMenu(menuClicked) {
-        console.log(menu);
+    function changeMenu(menuClicked, newPart) {
         setMenu(menuClicked);
+        setcurrentSelect(newPart);
     }
+
+    
 
     if(menu === 'default') {
         return (
@@ -141,8 +157,8 @@ export default function Assembly() {
         const currentParts = partCategories.find((part) => part.category === menu).parts; //find object category of menu, and then retrieve parts in that object
         return( 
             <>
-                <PartsSelector category={menu} parts={currentParts} handleClick={changeMenu} />
-                <PartsBuilder />
+                <PartsSelector category={menu} parts={currentParts} handleClick={changePart} currentSelect={currentSelect}/>
+                <PartsBuilder currentSelect={currentSelect} currentMenu={menu}/>
                 {/*add PartsBuilder here */}
             </>
         );
