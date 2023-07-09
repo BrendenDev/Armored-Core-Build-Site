@@ -1,6 +1,6 @@
 'use client'
 import { useState, useEffect } from 'react';
-import { connectDB, preloadPartData } from './db.js'
+import { getPartQuery } from './db.js';
 
 function PartsOverview({ category, parts, handleClick }) { //category = unit, frame, inner, or expansion
 
@@ -69,15 +69,25 @@ function PartsSelector({ category, parts, handleClick, currentSelect }) {
     );
 }
 
-//<RetrieveParts />
-
 export function PartsBuilder({ currentSelect, currentMenu }) {
 
     const [renderedData, setRenderedData] = useState([]);
 
     useEffect(() => {
+
         const fetchData = async () => {
-            const data = await preloadPartData(currentSelect, currentMenu);
+            const query = await getPartQuery(currentSelect, currentMenu);
+            const localQuery = currentMenu + "_data";
+            
+            //DATA NOT RECIEVING IN DATA, TEST FOR THAT
+            const rawData = localStorage.getItem(localQuery);
+            const data = [];
+            for(part in rawData) {
+                const partSpecs = JSON.parse(part);
+                data.push(partSpecs['name']);
+            }
+
+            
             setRenderedData(data);
         }
 
@@ -100,10 +110,6 @@ export function PartsBuilder({ currentSelect, currentMenu }) {
 }
 
 export default function Assembly() {
-
-    useEffect(() => {
-        connectDB()
-    }, []);
 
     const partCategories = [
         {
@@ -139,14 +145,15 @@ export default function Assembly() {
         setcurrentSelect(newPart);
     }
 
-    
-
     if(menu === 'default') {
         return (
             <>
                 {partCategories.map((part) => { //map all the parts
                     return (
+                        <>
+                        {/*back button handleer*/}
                         <PartsOverview key={part.category} category={part.category} parts={part.parts} handleClick={changeMenu}/>
+                        </>
                     );  
                 })}
             </>
@@ -156,11 +163,11 @@ export default function Assembly() {
     else {
         const currentParts = partCategories.find((part) => part.category === menu).parts; //find object category of menu, and then retrieve parts in that object
         return( 
-            <>
+            <div className='w-1/2'>
                 <PartsSelector category={menu} parts={currentParts} handleClick={changePart} currentSelect={currentSelect}/>
                 <PartsBuilder currentSelect={currentSelect} currentMenu={menu}/>
                 {/*add PartsBuilder here */}
-            </>
+            </div>
         );
     }
     

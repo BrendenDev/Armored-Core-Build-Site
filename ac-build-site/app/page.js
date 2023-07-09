@@ -1,18 +1,36 @@
 'use client'
 import Assembly from './building/assembly.js';
-
-
+import { useEffect } from 'react';
+import { preloadData } from './building/db.js';
 
 export default function Home() {
 
+  useEffect(() => {
+    const recordedVersion = window.localStorage.getItem("recorded_version");
+    const setVersion = async () => {
+      const [currentVersion, data] = await preloadData(recordedVersion);
+      if(data !== null) {
+        const [unitData, frameData, innerData, expansionData] = data;
+        window.localStorage.setItem("unit_data", JSON.stringify(unitData));
+        window.localStorage.setItem("frame_data", JSON.stringify(frameData));
+        window.localStorage.setItem("inner_data", JSON.stringify(innerData));
+        window.localStorage.setItem("expansion_data", JSON.stringify(expansionData));
+      }
+      window.localStorage.setItem("recorded_version", currentVersion);
+    };
+    setVersion();
+  }, []);
+
   return (
     <main className="flex min-h-screen flex-row items-start justify-between px-20 py-16 font-agency-fb text-white">
+
       {/*assembly container*/}
       <div className="w-1/3 text-2x1 flex-col"> 
         <Assembly />
       </div>
     </main>
   )
+  
 }
 
 
