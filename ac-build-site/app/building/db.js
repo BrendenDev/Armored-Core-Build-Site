@@ -3,6 +3,10 @@ const { MongoClient, ServerApiVersion } = require('mongodb');
 const { dbPassword } = require("./../../config.json");
 const uri = `mongodb+srv://ReadUser:${dbPassword}@acbuildsite.id5i3hu.mongodb.net/?retryWrites=true&w=majority`;
 
+//two databases: 
+//one, the online that is retrieved only when recorded db version isn't matching most recent db version
+//two, the offline that is stored in localStorage
+
 const client = new MongoClient(uri, {
   serverApi: {
     version: ServerApiVersion.v1,
@@ -60,6 +64,7 @@ export async function preloadData(recordedVersion) {
   //no matter what, it'll still record the version
   if(updated) {
     console.log("everything up-to-date!");
+    client.close();
     return [currentVersion, null]; 
   }
 
@@ -68,20 +73,18 @@ export async function preloadData(recordedVersion) {
     return [currentVersion, data];
   }
   
-
-  
 }
 
 function partQueryMaker(currentSelect) {
 
   if(currentSelect === 'R-ARM UNIT' || currentSelect === 'L-ARM UNIT') {
-      return {type: {$regex: 'arm'}};
+      return 'arm'; //original, non-preload, get from db query was: return {type: {$regex: 'arm'}};
   }
   else if(currentSelect === 'R-BACK UNIT' || currentSelect === 'L-BACK UNIT') {
-      return {type: {$regex: 'back'}};
+      return 'back';
   }
   else {
-      return {type: {$regex: currentSelect.toLowerCase()}};
+      return currentSelect.toLowerCase();
   }
   
 }
@@ -106,10 +109,9 @@ function menuQueryMaker(currentMenu) {
 
 }
 
-export async function getPartQuery(currentSelect, currentMenu) { //not really preloading rn, but will implement!
+export async function getPartQuery(currentSelect) { //not really preloading rn, but will implement!
 
   const partQuery = partQueryMaker(currentSelect);
-  const menuQuery = menuQueryMaker(currentMenu);
 
   const partData = partQuery;
 

@@ -5,6 +5,10 @@
 
 
 ## Project Making
+- [ ] Make it so when you select another part tab, it automatically goes to the stats of the equipped part
+
+- [ ] Compare parts list, add little compare button to add to list
+
 - [ ] Create app for updating data in database
 
 - [ ] Documentation (for future api)

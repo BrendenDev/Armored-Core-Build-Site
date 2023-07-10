@@ -36,11 +36,21 @@ body {
   .font-agency-fb {
     font-family: "AgencyFB", sans-serif;
   }
+
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .no-text-cursor {
+    cursor: default;
+  }
 }
 
 body {
   background-color: #2f445d;
   position: relative;
+  overflow: hidden;
 }
 
 body::before {
@@ -53,5 +63,7 @@ body::before {
   background-image: radial-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.45));
   z-index: -1; 
 }
+
+
 
 

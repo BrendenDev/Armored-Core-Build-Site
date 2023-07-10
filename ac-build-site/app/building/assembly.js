@@ -1,6 +1,6 @@
 'use client'
 import { useState, useEffect } from 'react';
-import { getPartQuery } from './db.js';
+import { PartsSelector, PartsBuilder } from './partsui.js';
 
 function PartsOverview({ category, parts, handleClick }) { //category = unit, frame, inner, or expansion
 
@@ -30,86 +30,7 @@ function PartsOverview({ category, parts, handleClick }) { //category = unit, fr
     );
 }
 
-function PartsSelector({ category, parts, handleClick, currentSelect }) {
-
-    const partHeader = (
-        <div className="text-2x1 pb-2"> 
-            <h1 className="text-center text-[rgb(200,200,200)]">{category}</h1>
-        </div>
-    );
-
-    const partElements = parts.map( (part, index) => {
-        if(part === currentSelect) {
-            return (
-                <div key={index} className="flex-grow basis-0 bg-[rgb(120,148,162)]" onClick={() => handleClick(part)}> {/* change hover to gradient please */}
-                    <h1 className="py-2 text-center">{part}</h1>
-                </div> 
-            );
-        }
-        else {
-            return (
-                <div key={index} className="flex-grow basis-0 bg-[rgb(35,50,67)] hover:bg-[rgb(120,148,162)]" onClick={() => handleClick(part)}>
-                    <h1 className="py-2 text-center">{part}</h1>
-                </div> 
-            );
-        }
-    });
-
-
-    return( 
-        <div className="pb-6">
-            {/*category heading*/}
-            {partHeader}
-            
-            {/*parts in category*/}
-            <div className="flex flex-row justify-evenly">
-                {partElements}
-            </div>
-        </div>
-    );
-}
-
-export function PartsBuilder({ currentSelect, currentMenu }) {
-
-    const [renderedData, setRenderedData] = useState([]);
-
-    useEffect(() => {
-
-        const fetchData = async () => {
-            const query = await getPartQuery(currentSelect, currentMenu);
-            const localQuery = currentMenu + "_data";
-            
-            //DATA NOT RECIEVING IN DATA, TEST FOR THAT
-            const rawData = localStorage.getItem(localQuery);
-            const data = [];
-            for(part in rawData) {
-                const partSpecs = JSON.parse(part);
-                data.push(partSpecs['name']);
-            }
-
-            
-            setRenderedData(data);
-        }
-
-        fetchData();
-    }, [currentSelect]);
-
-    return(
-        <div className="w-full border border-gray-300 rounded overflow-hidden">
-            <div className="overflow-y-auto h-full max-h-[75vh]">
-                <ul className="list-none p-0">
-                    {
-                        renderedData.map((item, index) => (
-                            <li key={index} className="text-center py-20">{item}</li>
-                        ))
-                    }
-                </ul>
-            </div>
-        </div>
-    );
-}
-
-export default function Assembly() {
+export default function Assembly({ currentMenu, setCurrentMenu, currentSelect, setCurrentSelect, currentPart, setCurrentPart}) {
 
     const partCategories = [
         {
@@ -132,42 +53,39 @@ export default function Assembly() {
 
     //eventually change these to localstorage so we can keep the person's last state
 
-    const [currentSelect, setcurrentSelect] = useState("");
-
-    function changePart(newPart) {
-        setcurrentSelect(newPart);
+    function changeSelect(newPart) {
+        setCurrentSelect(newPart);
     }
 
-    const [menu, setMenu] = useState('default');
-
-    function changeMenu(menuClicked, newPart) {
-        setMenu(menuClicked);
-        setcurrentSelect(newPart);
+    function changeMenu(currentMenuClicked, newPart) {
+        setCurrentMenu(currentMenuClicked);
+        setCurrentSelect(newPart);
     }
 
-    if(menu === 'default') {
+    if(currentMenu === 'default') {
         return (
-            <>
-                {partCategories.map((part) => { //map all the parts
+            <div className="pt-4">
+                {partCategories.map((part, index) => { //map all the parts
                     return (
                         <>
-                        {/*back button handleer*/}
-                        <PartsOverview key={part.category} category={part.category} parts={part.parts} handleClick={changeMenu}/>
+                            {/*back button handler*/}
+                            <PartsOverview key={index} category={part.category} parts={part.parts} handleClick={changeMenu}/>
                         </>
                     );  
                 })}
-            </>
+            </div>
         );
     }
 
     else {
-        const currentParts = partCategories.find((part) => part.category === menu).parts; //find object category of menu, and then retrieve parts in that object
+        const currentParts = partCategories.find((part) => part.category === currentMenu).parts; //find object category of currentMenu, and then retrieve parts in that object
         return( 
-            <div className='w-1/2'>
-                <PartsSelector category={menu} parts={currentParts} handleClick={changePart} currentSelect={currentSelect}/>
-                <PartsBuilder currentSelect={currentSelect} currentMenu={menu}/>
-                {/*add PartsBuilder here */}
-            </div>
+            <>
+            <div className='w-3/4'>
+                <PartsSelector category={currentMenu} parts={currentParts} handleClick={changeSelect} currentSelect={currentSelect} />
+                <PartsBuilder currentSelect={currentSelect} currentMenu={currentMenu} currentPart={currentPart} setCurrentPart={setCurrentPart}/>
+            </div>  
+            </>
         );
     }
     
