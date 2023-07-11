@@ -41,11 +41,9 @@ export function PartsSelector({ category, parts, handleClick, currentSelect }) {
     );
 }
 
-export function PartsBuilder({ currentSelect, currentMenu, currentPart, setCurrentPart }) {
+export function PartsBuilder({ currentSelect, currentMenu, currentPart, setCurrentPart, currentEquipped, setCurrentEquipped }) {
 
     const [renderedData, setRenderedData] = useState([]);
-
-    const [currentEquipped, setCurrentEquipped] = useState("");
 
 
     useEffect(() => {
@@ -76,8 +74,6 @@ export function PartsBuilder({ currentSelect, currentMenu, currentPart, setCurre
             
         }
         checkEquipped();
-
-        setCurrentPart("");
 
 
     }, [currentSelect]);

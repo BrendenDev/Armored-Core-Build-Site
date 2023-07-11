@@ -5,6 +5,8 @@
 
 
 ## Project Making
+- [ ] A reason why it lags so much between switching categories (not sub-categories) is because it over writes the old list of parts from the other category (I'm pretty sure). 
+
 - [ ] Make it so when you select another part tab, it automatically goes to the stats of the equipped part
 
 - [ ] Compare parts list, add little compare button to add to list

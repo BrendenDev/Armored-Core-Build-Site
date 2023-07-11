@@ -2,59 +2,7 @@
 import Assembly from './building/assembly.js';
 import { useState, useEffect } from 'react';
 import { preloadData } from './building/db.js';
-import { } from './statUI/statbox.js'
-import { stringify } from 'postcss';
-
-export function PartsStats({ currentMenu, currentSelect, currentPart }) {
-
-  const [stats, setStats] = useState();
-
-  //function changeStatData() 
-
-  /*useEffect(() => {
-    if(currentPart === null) {} 
-    else {
-      setStats(JSON.stringify(currentPart));
-    }
-
-  }, [currentPart]); //possibly dont need stateChangeTrigger and can use current select, but need to be able to activate when initially press*/
-
-  function StatsList(currentPart) {
-    if(currentMenu === 'default' || currentPart === null) {
-      return(
-        <>
-        </>
-      );
-    }
-    else {
-      const data = []
-      const rawData = currentPart['currentPart'];
-      for(let [key, value] of Object.entries(rawData)) {
-        if(key !== '_id' && key !== 'name' & key !== 'type') {
-          data.push(<p>{key}: {value}</p>);
-        }
-      }
-
-      return(
-        <>
-          {data}
-        </>
-      );
-    }
-
-    
-  }
-
-  return (
-      <div className="text-center">
-          <p>
-            <StatsList currentPart={currentPart}/>
-          </p>
-      </div>
-  );
-
-}
-
+import { PartsStats, FrameStats } from './statUI/statbox.js'
 
 export default function Home() {
 
@@ -62,7 +10,9 @@ export default function Home() {
 
   const [currentSelect, setCurrentSelect] = useState(""); //selects: the sub-categories of unit, frame, inner, and expansion
 
-  const [currentPart, setCurrentPart] = useState(""); //current parts: all the parts of the sub-categories
+  const [currentPart, setCurrentPart] = useState(""); //current part of stats displayed: all the parts of the sub-categories
+
+  const [currentEquipped, setCurrentEquipped] = useState(""); //current equipped part, not just selected (applies to overall stats, not just viewing)
   
 
   useEffect(() => {
@@ -88,12 +38,13 @@ export default function Home() {
 
       {/*assembly container*/}
       <div className="w-1/3 text-2x1 flex-col mx-8"> 
-        <Assembly currentMenu={currentMenu} setCurrentMenu={setCurrentMenu} currentSelect={currentSelect} setCurrentSelect={setCurrentSelect} currentPart={currentPart} setCurrentPart={setCurrentPart}/>
+        <Assembly currentMenu={currentMenu} setCurrentMenu={setCurrentMenu} currentSelect={currentSelect} setCurrentSelect={setCurrentSelect} currentPart={currentPart} setCurrentPart={setCurrentPart} currentEquipped={currentEquipped} setCurrentEquipped={setCurrentEquipped}/>
       </div>
-      <div className='w-[44.44%] border-white border-2 mx-8 items-end justify-end'>
+      <div className='w-[44.44%] mx-8 items-end justify-end'>
         <PartsStats currentMenu={currentMenu} currentSelect={currentSelect} currentPart={currentPart}/>
       </div>
       <div className='w-[33.33%] border-black border-2 mx-8'>
+        <FrameStats currentSelect={currentSelect} currentEquipped={currentEquipped} />
       </div>
     </main>
   )

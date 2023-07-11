@@ -30,11 +30,11 @@ function PartsOverview({ category, parts, handleClick }) { //category = unit, fr
     );
 }
 
-export default function Assembly({ currentMenu, setCurrentMenu, currentSelect, setCurrentSelect, currentPart, setCurrentPart}) {
+export default function Assembly({ currentMenu, setCurrentMenu, currentSelect, setCurrentSelect, currentPart, setCurrentPart, currentEquipped, setCurrentEquipped}) {
 
-    const partCategories = [
+    const partCategories = [ //can put this in home component and shoot it down to assembly as well as statbox. also can separate category and parts into two arrays instead of together in object
         {
-          category: "UNIT",
+          category: "UNIT", 
           parts: ["R-ARM UNIT", "L-ARM UNIT", "R-BACK UNIT", "L-BACK UNIT"]
         },
         {
@@ -51,8 +51,6 @@ export default function Assembly({ currentMenu, setCurrentMenu, currentSelect, s
         }
     ];
 
-    //eventually change these to localstorage so we can keep the person's last state
-
     function changeSelect(newPart) {
         setCurrentSelect(newPart);
     }
@@ -68,7 +66,6 @@ export default function Assembly({ currentMenu, setCurrentMenu, currentSelect, s
                 {partCategories.map((part, index) => { //map all the parts
                     return (
                         <>
-                            {/*back button handler*/}
                             <PartsOverview key={index} category={part.category} parts={part.parts} handleClick={changeMenu}/>
                         </>
                     );  
@@ -83,7 +80,7 @@ export default function Assembly({ currentMenu, setCurrentMenu, currentSelect, s
             <>
             <div className='w-3/4'>
                 <PartsSelector category={currentMenu} parts={currentParts} handleClick={changeSelect} currentSelect={currentSelect} />
-                <PartsBuilder currentSelect={currentSelect} currentMenu={currentMenu} currentPart={currentPart} setCurrentPart={setCurrentPart}/>
+                <PartsBuilder currentSelect={currentSelect} currentMenu={currentMenu} currentPart={currentPart} setCurrentPart={setCurrentPart} currentEquipped={currentEquipped} setCurrentEquipped={setCurrentEquipped}/>
             </div>  
             </>
         );
