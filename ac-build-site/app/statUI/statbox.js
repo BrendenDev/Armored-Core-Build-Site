@@ -1,5 +1,5 @@
 'use client'
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export function PartsStats({ currentMenu, currentSelect, currentPart }) {
 
@@ -90,7 +90,14 @@ export function PartsStats({ currentMenu, currentSelect, currentPart }) {
 export function FrameStats({currentSelect, currentEquipped}) {
 
     const [equippedParts, setEquippedParts] = useState();
-    const [stats, setStats] = useState(); 
+    const [stats, setStats] = useState({
+      armour_points: 0,
+      defensive_performance: 0,
+      attitude_stability: 0,
+      boost_speed: 0,
+      current_load: 0,
+      current_en_load: 0
+    }); 
     const allParts = ["R-ARM UNIT", "L-ARM UNIT", "R-BACK UNIT", "L-BACK UNIT", "HEAD", "CORE", "ARMS", "LEGS", "BOOSTER", "FCS", "GENERATOR", "EXPANSION"];
     const statContributors = {
         armour_points: ['armour_points'],
@@ -101,6 +108,7 @@ export function FrameStats({currentSelect, currentEquipped}) {
         current_en_load: ['en_load']
 
     };
+    
 
     useEffect(() => {
         const frameData = {};
@@ -108,14 +116,6 @@ export function FrameStats({currentSelect, currentEquipped}) {
             frameData[part] = JSON.parse(localStorage.getItem(part));
         });
         setEquippedParts(frameData);
-        setStats({
-            armour_points: 0,
-            defensive_performance: 0,
-            attitude_stability: 0,
-            boost_speed: 0,
-            current_load: 0,
-            current_en_load: 0
-        });
 
         const statData = stats;
     
@@ -124,9 +124,9 @@ export function FrameStats({currentSelect, currentEquipped}) {
             if(part !== null && part !== undefined) {
                 for(let [partSpec, partValue] of Object.entries(part)) {
                     for(let [spec, acceptableSpecs] of Object.entries(statContributors)) {
-                        console.log(acceptableSpecs + " " + partSpec);
                         if(acceptableSpecs.includes(partSpec)) {
-                            statData[spec] = partValue;
+                            //console.log("adding " + spec + " as " + partValue + " from " + partName); //in the first for loop, change to let [partName, part] of Object.entries
+                            statData[spec] += parseFloat(partValue);
                         }
                     }
                 }
@@ -134,45 +134,50 @@ export function FrameStats({currentSelect, currentEquipped}) {
             
         }
 
-        setStats(statData);
 
-        console.log(stats);
         
     }, []);
 
     useEffect(() => {
         if(currentSelect !== null && currentSelect !== "") {
-            setStats({
-                armour_points: 0,
-                defensive_performance: 0,
-                attitude_stability: 0,
-                boost_speed: 0,
-                current_load: 0,
-                current_en_load: 0
-            });
-            const frameData = equippedParts;
-            const newEquippedPart = localStorage.getItem(currentSelect);
-            frameData[currentSelect] = newEquippedPart;
+            console.log('hi');
 
-            const statData = stats; //i don't know what happened here. I just know my brain exploded writing this and I probably won't remember how this works
-            for(let part in frameData) {
-                if(frameData[part] !== null && frameData[part] !== "") {
-                    for(let [spec, value] of Object.entries(frameData[part])) {
-                        for(let stat in statContributors) {
-                            if(statContributors[stat].includes(spec)) {  
-                                console.log("adding " + spec + "=" + value +" to " + stat)   
-                                if(statData[stat] !== null && statData[stat] !== undefined) {
-                                    statData[stat] += calculateString(value);
-                                }
-                            }
-                        }
-                    } 
-                }
-            }
+            const frameData = equippedParts;
+            const newEquippedPart = JSON.parse(localStorage.getItem(currentSelect));
+            frameData[currentSelect] = newEquippedPart;
+            setEquippedParts(frameData);
+            console.log(frameData[currentSelect]);
+            console.log(frameData);
+
+            const statData = {
+              armour_points: 0,
+              defensive_performance: 0,
+              attitude_stability: 0,
+              boost_speed: 0,
+              current_load: 0,
+              current_en_load: 0
+            }; 
+
+            console.log(statData);
+            //i don't know what happened here. I just know my brain exploded writing this and I probably won't remember how this works
+            for(let part of Object.values(frameData)) {
+              if(part !== null && part !== undefined) {
+                  for(let [partSpec, partValue] of Object.entries(part)) {
+                      for(let [spec, acceptableSpecs] of Object.entries(statContributors)) {
+                          if(acceptableSpecs.includes(partSpec)) {
+                              //console.log("adding " + spec + " as " + partValue + " from " + partName); //in the first for loop, change to let [partName, part] of Object.entries
+                              statData[spec] += parseFloat(partValue);
+                          }
+                      }
+                  }
+              }
+              
+          }
                 
 
-            //console.log(statData);
             setStats(statData);
+
+            //console.log(statData);
 
             setEquippedParts(frameData);
         }
@@ -180,33 +185,49 @@ export function FrameStats({currentSelect, currentEquipped}) {
         }
     , [currentEquipped]);
 
-    function calculateString(possibleString) {
-        if (typeof possibleString === 'string') {
-            const operatorIndex = possibleString.indexOf('x');
-            if (operatorIndex !== -1) {
-            const operand1 = parseFloat(possibleString.substring(0, operatorIndex));
-            const operand2 = parseFloat(possibleString.substring(operatorIndex + 1));
-            const result = operand1 * operand2;
-            return result;
-            }
-        }
-        return parseFloat(possibleString);
+    function convertToTitleCase(str) {
+      let words = str.split('_');
+      let result = '';
+      
+      for (let i = 0; i < words.length; i++) {
+        let word = words[i];
+        result += word.charAt(0).toUpperCase() + word.slice(1) + ' ';
+      }
+      
+      return result.trim();
     }
+
 
     function RenderedStats() {
         const renderedData = [];
         if(stats !== null && stats !== undefined) {
-            for(let [spec, value] of Object.entries(stats)) {
-                renderedData.push(
-                    <p>{spec}: {value}</p>
-                );
+            let i = 2;
+            for(let [key, value] of Object.entries(stats)) {
+                const spec = convertToTitleCase(key);
+                if(i%2 === 0) {
+                  renderedData.push(
+                    <span className='flex justify-between bg-[rgb(42,54,77)]'>
+                      <p className='pl-2'>{spec}</p>
+                      <p className='pr-2'>{value}</p>
+                    </span>
+                  );
+                }
+                else {
+                  renderedData.push(
+                    <span className='flex justify-between bg-[rgb(48,59,81)]'>
+                      <p className='pl-2'>{spec}</p>
+                      <p className='pr-2'>{value}</p>
+                    </span>
+                  );
+                }
+                i++;
             }
 
 
             return(
-                <>
+                <div className="p-4">
                     {renderedData}
-                </>
+                </div>
             );
             
         }
