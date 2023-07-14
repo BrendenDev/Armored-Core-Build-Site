@@ -1,5 +1,6 @@
 'use client'
 import { useState, useEffect } from 'react';
+import { Corners } from '../ui/corners.js';
 
 export function PartsStats({ currentMenu, currentSelect, currentPart }) {
 
@@ -25,52 +26,98 @@ export function PartsStats({ currentMenu, currentSelect, currentPart }) {
       }
   
       else { //this organization of entering data is purely based on how the data is organized in the database. yea, i know that's bad. Sue me. jk pls dont
-        const data = [] //might be better to just make three arrays and then turn it into one and return that instead or even return as three so you can adjust the three separately
+        const partType = [];
+        const partInfo = [];
+        const partValues = [];
+        
+        //might be better to just make three arrays and then turn it into one and return that instead or even return as three so you can adjust the three separately
         const rawData = currentPart['currentPart'];
+        let i = 2; //for the coloring for the partValues
         for(let [key, value] of Object.entries(rawData)) {
           if(key !== '_id' && key !== 'type') {
+
+            /*    PART TYPE/NAME    */
             if(key === 'extra_type') {
               if(value === 'none') {
                 value = currentSelect;
               }
-              data.unshift(
-                <div className="">
+              partType.unshift(
+                <div>
                   <p>{value.toUpperCase()}</p>
                 </div>
               );
             }
+
             else if(key === 'name' ) {
-              data.splice(0, 0, (
-                <div className="mb-[15vh]">
+              partType.splice(1, 0, (
+                <div>
                   <p>{value}</p>
                 </div>
               ));
             }
+
+            /*    PART DESCRIPTION    */
             else if(key === 'description') {
-              data.splice(1, 0, (
-                <div className="mb-[40vh]">
+              partInfo.push(
+                <div className="p-2 pt-1">
                   <p className="">Part Info</p>
                   <p>{value}</p>
                 </div>
-              ));
+              );
             }
+
+            /*    PART STATS    */
             else {
               const spec = convertToTitleCase(key);
-              data.push(
-                <span className="flex justify-between">
-                  <p className="">{spec}&nbsp;</p>
-                  <p className="">{value}</p>
-                </span>
-            );
+              if(i%2==0) {
+                partValues.push(
+                  <span className="flex justify-between bg-[rgb(42,54,77)] bg-opacity-80">
+                    <p className="pl-2">{spec}&nbsp;</p>
+                    <p className="pr-2">{value}</p>
+                  </span>
+                );
+              }
+              else {
+                partValues.push(
+                  <span className="flex justify-between bg-[rgb(48,59,81)] bg-opacity-80">
+                    <p className="pl-2">{spec}&nbsp;</p>
+                    <p className="pr-2">{value}</p>
+                  </span>
+                );
+              }
+              i++;
   
             }
             
           }
         }
         return(
-          <>
-            {data}
-          </>
+          <div className="h-full flex flex-col justify-between">
+            <div className="">
+              {partType} 
+            </div>
+
+            <div>
+              <div>
+                <div className="bg-[rgb(43,59,84)] bg-opacity-100 relative">
+                  {partInfo} 
+                  <Corners /> 
+                </div>
+
+                <div className="flex h-[50vh] bg-[rgb(52,68,96)] items-center justify-center bg-opacity-80">
+                  <p>Place holder for image</p>
+                </div>
+              </div>
+              
+
+              <div className="bg-[rgb(43,59,84)] p-2 bg-opacity-80 relative">
+                {partValues}
+                <Corners /> 
+              </div>
+
+            </div>
+            
+          </div>
         );
       }
   
@@ -78,10 +125,8 @@ export function PartsStats({ currentMenu, currentSelect, currentPart }) {
     }
   
     return (
-        <div className="text-center">
-            <p>
+        <div className="text-center h-[85vh]">
               <StatsList currentPart={currentPart}/>
-            </p>
         </div>
     );
   
@@ -206,7 +251,7 @@ export function FrameStats({currentSelect, currentEquipped}) {
                 const spec = convertToTitleCase(key);
                 if(i%2 === 0) {
                   renderedData.push(
-                    <span className='flex justify-between bg-[rgb(42,54,77)]'>
+                    <span className='flex justify-between bg-[rgb(42,54,77)] bg-opacity-80'>
                       <p className='pl-2'>{spec}</p>
                       <p className='pr-2'>{value}</p>
                     </span>
@@ -214,7 +259,7 @@ export function FrameStats({currentSelect, currentEquipped}) {
                 }
                 else {
                   renderedData.push(
-                    <span className='flex justify-between bg-[rgb(48,59,81)]'>
+                    <span className='flex justify-between bg-[rgb(48,59,81)] bg-opacity-80'>
                       <p className='pl-2'>{spec}</p>
                       <p className='pr-2'>{value}</p>
                     </span>
@@ -225,7 +270,7 @@ export function FrameStats({currentSelect, currentEquipped}) {
 
 
             return(
-                <div className="p-4">
+                <div className="p-2">
                     {renderedData}
                 </div>
             );

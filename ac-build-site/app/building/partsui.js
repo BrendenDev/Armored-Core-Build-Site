@@ -1,6 +1,7 @@
 'use client'
 import {useState, useEffect} from 'react';
 import { getPartQuery } from './db.js';
+import { Corners } from '../ui/corners.js';
 
 export function PartsSelector({ category, parts, handleClick, currentSelect }) {
 
@@ -144,7 +145,7 @@ export function PartsBuilder({ currentSelect, currentMenu, currentPart, setCurre
     }
 
     return( //make div background a gradient
-        <div className="bg-gradient-to-b from-custom-gradient-start via-custom-gradient-mid to-custom-gradient-end"> 
+        <div className="bg-gradient-to-b from-custom-gradient-start via-custom-gradient-mid to-custom-gradient-end relative"> 
             <div className="overflow-y-auto h-full max-h-[75vh] no-scrollbar">
                 <ul className="list-none p-0">
                     {
@@ -156,6 +157,7 @@ export function PartsBuilder({ currentSelect, currentMenu, currentPart, setCurre
                     }
                 </ul>
             </div>
+            <Corners />
         </div>
     );
 }

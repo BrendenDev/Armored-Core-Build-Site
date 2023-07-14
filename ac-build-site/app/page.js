@@ -2,7 +2,8 @@
 import Assembly from './building/assembly.js';
 import { useState, useEffect } from 'react';
 import { preloadData } from './building/db.js';
-import { PartsStats, FrameStats } from './statUI/statbox.js'
+import { PartsStats, FrameStats } from './statUI/statbox.js';
+import { Corners } from './ui/corners.js';
 
 function HomeButton({setCurrentMenu}) {
   return (
@@ -12,6 +13,8 @@ function HomeButton({setCurrentMenu}) {
     
   );
 }
+
+//to fix the image loading before everything else, just make sure it picks a part before you open the menu
 
 export default function Home() {
 
@@ -56,8 +59,9 @@ export default function Home() {
       </div>
 
       {/*frame stats container*/}
-      <div className='w-[33.33%] mt-[70vh] bg-[rgb(37,49,74)] mx-8'>
+      <div className='w-[33.33%] mt-[70vh] bg-[rgb(37,49,74)] bg-opacity-80 mx-8 relative'>
         <FrameStats currentSelect={currentSelect} currentEquipped={currentEquipped} />
+        <Corners />
       </div>
 
       <div className='absolute bottom-[3vh] border-2 border-white w-[5vw] h-[5vh]'>
