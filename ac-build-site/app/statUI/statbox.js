@@ -185,14 +185,11 @@ export function FrameStats({currentSelect, currentEquipped}) {
 
     useEffect(() => {
         if(currentSelect !== null && currentSelect !== "") {
-            console.log('hi');
 
             const frameData = equippedParts;
             const newEquippedPart = JSON.parse(localStorage.getItem(currentSelect));
             frameData[currentSelect] = newEquippedPart;
             setEquippedParts(frameData);
-            console.log(frameData[currentSelect]);
-            console.log(frameData);
 
             const statData = {
               armour_points: 0,
@@ -203,7 +200,7 @@ export function FrameStats({currentSelect, currentEquipped}) {
               current_en_load: 0
             }; 
 
-            console.log(statData);
+    
             //i don't know what happened here. I just know my brain exploded writing this and I probably won't remember how this works
             for(let part of Object.values(frameData)) {
               if(part !== null && part !== undefined) {

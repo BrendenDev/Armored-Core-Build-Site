@@ -1,6 +1,6 @@
 'use client'
 import {useState, useEffect} from 'react';
-import { getPartQuery } from './db.js';
+import { getPartQuery } from './queries.js';
 import { Corners } from '../ui/corners.js';
 
 export function PartsSelector({ category, parts, handleClick, currentSelect }) {
@@ -48,8 +48,8 @@ export function PartsBuilder({ currentSelect, currentMenu, currentPart, setCurre
 
 
     useEffect(() => {
-        const fetchData = async () => { //can move this to useEffect in page.js to truly preload
-            const query = await getPartQuery(currentSelect); //this has to be an await despite grabbing from local storage
+        const fetchData = () => { //can move this to useEffect in page.js to truly preload
+            const query = getPartQuery(currentSelect); //this has to be an await despite grabbing from local storage
             const localQuery = currentMenu.toLowerCase() + "_data";
             
             //DATA NOT RECIEVING IN DATA, TEST FOR THAT
@@ -75,7 +75,6 @@ export function PartsBuilder({ currentSelect, currentMenu, currentPart, setCurre
             
         }
         checkEquipped();
-
 
     }, [currentSelect]);
 
@@ -109,6 +108,9 @@ export function PartsBuilder({ currentSelect, currentMenu, currentPart, setCurre
 
     useEffect(() => {
         localStorage.setItem(currentSelect, JSON.stringify(currentEquipped));
+        if(currentEquipped !== null && currentEquipped['type'] !== currentSelect) { //sets the currentPart (stat preview) to the equipped part when you change select
+            setCurrentPart(currentEquipped);
+        }
     }, [currentEquipped]);
 
     function changeCurrentEquipped(part) {

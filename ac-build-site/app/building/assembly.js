@@ -66,7 +66,7 @@ export default function Assembly({ currentMenu, setCurrentMenu, currentSelect, s
                 {partCategories.map((part, index) => { //map all the parts
                     return (
                         <>
-                            <PartsOverview key={index} category={part.category} parts={part.parts} handleClick={changeMenu}/>
+                            <PartsOverview key={index} category={part.category} parts={part.parts} handleClick={changeMenu} />
                         </>
                     );  
                 })}
