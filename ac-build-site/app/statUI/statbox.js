@@ -132,9 +132,8 @@ export function PartsStats({ currentMenu, currentSelect, currentPart }) {
   
 }
 
-export function FrameStats({currentSelect, currentEquipped}) {
+export function FrameStats({currentSelect, currentEquipped, equippedParts, setEquippedParts}) {
 
-    const [equippedParts, setEquippedParts] = useState();
     const [stats, setStats] = useState({
       armour_points: 0,
       defensive_performance: 0,
@@ -143,7 +142,7 @@ export function FrameStats({currentSelect, currentEquipped}) {
       current_load: 0,
       current_en_load: 0
     }); 
-    const allParts = ["R-ARM UNIT", "L-ARM UNIT", "R-BACK UNIT", "L-BACK UNIT", "HEAD", "CORE", "ARMS", "LEGS", "BOOSTER", "FCS", "GENERATOR", "EXPANSION"];
+    const allSelects = ["R-ARM UNIT", "L-ARM UNIT", "R-BACK UNIT", "L-BACK UNIT", "HEAD", "CORE", "ARMS", "LEGS", "BOOSTER", "FCS", "GENERATOR", "EXPANSION"];
     const statContributors = {
         armour_points: ['armour_points'],
         defensive_performance: [],
@@ -157,7 +156,7 @@ export function FrameStats({currentSelect, currentEquipped}) {
 
     useEffect(() => {
         const frameData = {};
-        allParts.forEach((part) => {
+        allSelects.forEach((part) => {
             frameData[part] = JSON.parse(localStorage.getItem(part));
         });
         setEquippedParts(frameData);
@@ -178,7 +177,6 @@ export function FrameStats({currentSelect, currentEquipped}) {
             }
             
         }
-
 
         
     }, []);

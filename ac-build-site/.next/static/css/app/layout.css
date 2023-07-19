@@ -624,6 +624,15 @@ video {
 .mt-\[70vh\] {
   margin-top: 70vh;
 }
+.mb-0 {
+  margin-bottom: 0px;
+}
+.mt-2 {
+  margin-top: 0.5rem;
+}
+.mt-1 {
+  margin-top: 0.25rem;
+}
 .flex {
   display: flex;
 }
@@ -640,6 +649,9 @@ video {
   height: 85vh;
 }
 .h-full {
+  height: 100%;
+}
+.h-\[100\%\] {
   height: 100%;
 }
 .max-h-\[75vh\] {
@@ -669,6 +681,15 @@ video {
 .w-full {
   width: 100%;
 }
+.w-\[33\%\] {
+  width: 33%;
+}
+.w-\[10\%\] {
+  width: 10%;
+}
+.w-\[20\%\] {
+  width: 20%;
+}
 .flex-grow {
   flex-grow: 1;
 }
@@ -687,6 +708,12 @@ video {
 }
 .flex-col {
   flex-direction: column;
+}
+.place-items-end {
+  place-items: end;
+}
+.content-center {
+  align-content: center;
 }
 .items-start {
   align-items: flex-start;
@@ -709,11 +736,26 @@ video {
 .justify-evenly {
   justify-content: space-evenly;
 }
+.place-self-end {
+  place-self: end;
+}
+.self-end {
+  align-self: flex-end;
+}
+.justify-self-end {
+  justify-self: end;
+}
 .overflow-y-auto {
   overflow-y: auto;
 }
 .border-2 {
   border-width: 2px;
+}
+.border-\[0\.5rem\] {
+  border-width: 0.5rem;
+}
+.border-\[0\.01rem\] {
+  border-width: 0.01rem;
 }
 .border-\[rgb\(52\2c 64\2c 80\)\] {
   --tw-border-opacity: 1;
@@ -722,6 +764,9 @@ video {
 .border-white {
   --tw-border-opacity: 1;
   border-color: rgb(255 255 255 / var(--tw-border-opacity));
+}
+.border-\[0\.5\] {
+  border-color: 0.5;
 }
 .bg-\[rgb\(101\2c 117\2c 131\)\] {
   --tw-bg-opacity: 1;
@@ -814,6 +859,10 @@ video {
   padding-top: 5rem;
   padding-bottom: 5rem;
 }
+.py-0 {
+  padding-top: 0px;
+  padding-bottom: 0px;
+}
 .pb-2 {
   padding-bottom: 0.5rem;
 }
@@ -838,8 +887,32 @@ video {
 .pt-4 {
   padding-top: 1rem;
 }
+.pt-2 {
+  padding-top: 0.5rem;
+}
+.pb-1 {
+  padding-bottom: 0.25rem;
+}
+.pb-0 {
+  padding-bottom: 0px;
+}
 .text-center {
   text-align: center;
+}
+.text-right {
+  text-align: right;
+}
+.text-xs {
+  font-size: 0.75rem;
+  line-height: 1rem;
+}
+.text-sm {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+.text-lg {
+  font-size: 1.125rem;
+  line-height: 1.75rem;
 }
 .text-\[rgb\(200\2c 200\2c 200\)\] {
   --tw-text-opacity: 1;
@@ -848,6 +921,10 @@ video {
 .text-white {
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity));
+}
+.text-\[rgb\(112\2c 126\2c 148\)\] {
+  --tw-text-opacity: 1;
+  color: rgb(112 126 148 / var(--tw-text-opacity));
 }
 .filter {
   filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);

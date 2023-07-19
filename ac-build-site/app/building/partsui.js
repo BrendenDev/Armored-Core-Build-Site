@@ -1,27 +1,67 @@
 'use client'
 import {useState, useEffect} from 'react';
-import { getPartQuery } from './queries.js';
+import { getPartQuery, menuQueryMaker } from './queries.js';
 import { Corners } from '../ui/corners.js';
 
-export function PartsSelector({ category, parts, handleClick, currentSelect }) {
+export function PartsSelector({ currentMenu, setCurrentMenu, parts, setCurrentSelect, currentSelect }) {
+
+    const [prevMenu, setPrevMenu] = useState(null);
+    const [nextMenu, setNextMenu] = useState(null);
+
+    const allMenus = ['UNIT', 'FRAME', 'INNER', 'EXPANSION'];
+
+    const partCategories = { //can put this in home component and shoot it down to assembly as well as statbox. also can separate category and parts into two arrays instead of together in object
+        "UNIT": ["R-ARM UNIT", "L-ARM UNIT", "R-BACK UNIT", "L-BACK UNIT"],
+        "FRAME": ["HEAD", "CORE", "ARMS", "LEGS"], 
+        "INNER": ["BOOSTER", "FCS", "GENERATOR"],
+        "EXPANSION": ["EXPANSION"]
+    };
+
+    useEffect(() => {
+        setPrevMenu(allMenus[(allMenus.indexOf(currentMenu) - 1 + allMenus.length) % allMenus.length]);
+        setNextMenu(allMenus[(allMenus.indexOf(currentMenu) + 1) % allMenus.length]);
+    }, [currentMenu]);
+
+    function goNextMenu() {
+        setCurrentMenu(nextMenu);
+        setCurrentSelect(partCategories[nextMenu][0]); //partCategories[nextMenu].length-1
+    }
+
+    function goPrevMenu() {
+        setCurrentMenu(prevMenu);
+        setCurrentSelect(partCategories[prevMenu][0]); //partCategories[nextMenu].length-1
+    }
 
     const partHeader = (
-        <div className="text-2x1 pb-2"> 
-            <h1 className="text-center text-[rgb(200,200,200)]">{category}</h1>
+        <div className="pb-2"> 
+            <span className="text-center text-[rgb(200,200,200)] flex justify-between">
+                <span className="text-xs flex justify-center items-center w-[20%] border-[0.01rem] border-grey hover:cursor-pointer" onClick={goPrevMenu}>
+                    <p>{prevMenu}</p>
+                </span>
+
+                <span className="w-[20%] text-lg">
+                    <h1>{currentMenu}</h1>
+                </span>
+                
+
+                <span className="text-xs flex justify-center items-center w-[20%] border-[0.01rem] border-grey hover:cursor-pointer" onClick={goNextMenu}>
+                    <p>{nextMenu}</p>
+                </span>
+            </span> 
         </div>
     );
 
     const partElements = parts.map( (part, index) => {
         if(part === currentSelect) {
             return (
-                <div key={index} className="flex-grow basis-0 bg-[rgb(77,98,127)]" onClick={() => handleClick(part)}> {/* change hover to gradient please */}
+                <div key={index} className="flex-grow basis-0 bg-[rgb(77,98,127)]" onClick={() => setCurrentSelect(part)}> {/* change hover to gradient please */}
                     <h1 className="py-2 text-center">{part}</h1>
                 </div> 
             );
         }
         else {
             return (
-                <div key={index} className="flex-grow basis-0 bg-[rgb(35,50,67)] hover:bg-[rgb(120,148,162)]" onClick={() => handleClick(part)}>
+                <div key={index} className="flex-grow basis-0 bg-[rgb(35,50,67)] hover:bg-[rgb(120,148,162)]" onClick={() => setCurrentSelect(part)}>
                     <h1 className="py-2 text-center">{part}</h1>
                 </div> 
             );
@@ -164,23 +204,8 @@ export function PartsBuilder({ currentSelect, currentMenu, currentPart, setCurre
     );
 }
 
-//cache parts idea
-/*let cache = {};
-
-function getItemFromLocalStorage(key) {
-  if (cache.hasOwnProperty(key)) {
-    // Item is found in the cache, return it
-    return cache[key];
-  }
-
-  // Item is not found in the cache, retrieve it from localStorage
-  const item = localStorage.getItem(key);
-
-  // Store the item in the cache
-  cache[key] = item;
-
-  return item;
-}
+//cache parts idea//
+/*
 
 // Handle storage events to update the cache
 window.addEventListener('storage', (event) => {
@@ -200,4 +225,5 @@ const value2 = getItemFromLocalStorage('item2'); // Retrieves 'item2' from local
 localStorage.setItem('item1', 'new value');
 
 const updatedValue1 = getItemFromLocalStorage('item1'); // Retrieves the updated value from localStorage and updates the cache
+
 */

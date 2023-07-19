@@ -25,6 +25,8 @@ export default function Home() {
   const [currentPart, setCurrentPart] = useState(""); //current part of stats displayed: all the parts of the sub-categories
 
   const [currentEquipped, setCurrentEquipped] = useState(""); //current equipped part, not just selected (applies to overall stats, not just viewing)
+
+  const [equippedParts, setEquippedParts] = useState(); //ALL current equipped parts
   
 
   useEffect(() => {
@@ -50,7 +52,7 @@ export default function Home() {
 
       {/*assembly container*/}
       <div className="w-1/3 text-2x1 flex-col mx-8"> 
-        <Assembly currentMenu={currentMenu} setCurrentMenu={setCurrentMenu} currentSelect={currentSelect} setCurrentSelect={setCurrentSelect} currentPart={currentPart} setCurrentPart={setCurrentPart} currentEquipped={currentEquipped} setCurrentEquipped={setCurrentEquipped}/>
+        <Assembly currentMenu={currentMenu} setCurrentMenu={setCurrentMenu} currentSelect={currentSelect} setCurrentSelect={setCurrentSelect} currentPart={currentPart} setCurrentPart={setCurrentPart} currentEquipped={currentEquipped} setCurrentEquipped={setCurrentEquipped} equippedParts={equippedParts}/>
       </div>
 
       {/*part stats container*/}
@@ -60,11 +62,11 @@ export default function Home() {
 
       {/*frame stats container*/}
       <div className='w-[33.33%] mt-[70vh] bg-[rgb(37,49,74)] bg-opacity-80 mx-8 relative'>
-        <FrameStats currentSelect={currentSelect} currentEquipped={currentEquipped} />
+        <FrameStats currentSelect={currentSelect} currentEquipped={currentEquipped} equippedParts={equippedParts} setEquippedParts={setEquippedParts}/>
         <Corners />
       </div>
 
-      <div className='absolute bottom-[3vh] border-2 border-white w-[5vw] h-[5vh]'>
+      <div className='absolute bottom-[3vh] border-2 border-white w-[5vw] h-[5vh] hover:cursor-pointer'>
         <HomeButton setCurrentMenu={setCurrentMenu}/>
       </div>
     </main>

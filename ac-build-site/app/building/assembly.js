@@ -1,8 +1,7 @@
 'use client'
-import { useState, useEffect } from 'react';
 import { PartsSelector, PartsBuilder } from './partsui.js';
 
-function PartsOverview({ category, parts, handleClick }) { //category = unit, frame, inner, or expansion
+function PartsOverview({ category, parts, handleClick, equippedParts }) { //category = unit, frame, inner, or expansion
 
     const partHeader = (
         <div className="text-2x1 pb-2"> 
@@ -13,7 +12,12 @@ function PartsOverview({ category, parts, handleClick }) { //category = unit, fr
     const partElements = parts.map( (part, index) => {
         return (
             <div key={index} className="my-[0.15rem] border-2 border-[rgb(52,64,80)] bg-[rgb(54,72,97)] hover:bg-[rgb(120,148,162)]" onClick={() => handleClick(category, part)}> {/* change hover to gradient please */}
-                <h1 className="pl-10 py-2">{part}</h1>
+                <div className="f">
+                    <p className="pl-10 pt-1 text-xs text-[rgb(112,126,148)]">{part}</p>
+                    {equippedParts && equippedParts[part] ? 
+                    (<p className="pl-10 pb-1 text-sm">{equippedParts[part]['name']}</p>) : 
+                    (<p className="pl-10 pb-1 text-sm">Not Selected</p>)}
+                </div>
             </div>
         );
     });
@@ -30,7 +34,7 @@ function PartsOverview({ category, parts, handleClick }) { //category = unit, fr
     );
 }
 
-export default function Assembly({ currentMenu, setCurrentMenu, currentSelect, setCurrentSelect, currentPart, setCurrentPart, currentEquipped, setCurrentEquipped}) {
+export default function Assembly({ currentMenu, setCurrentMenu, currentSelect, setCurrentSelect, currentPart, setCurrentPart, currentEquipped, setCurrentEquipped, equippedParts}) {
 
     const partCategories = [ //can put this in home component and shoot it down to assembly as well as statbox. also can separate category and parts into two arrays instead of together in object
         {
@@ -51,10 +55,6 @@ export default function Assembly({ currentMenu, setCurrentMenu, currentSelect, s
         }
     ];
 
-    function changeSelect(newPart) {
-        setCurrentSelect(newPart);
-    }
-
     function changeMenu(currentMenuClicked, newPart) {
         setCurrentMenu(currentMenuClicked);
         setCurrentSelect(newPart);
@@ -66,7 +66,7 @@ export default function Assembly({ currentMenu, setCurrentMenu, currentSelect, s
                 {partCategories.map((part, index) => { //map all the parts
                     return (
                         <>
-                            <PartsOverview key={index} category={part.category} parts={part.parts} handleClick={changeMenu} />
+                            <PartsOverview key={index} category={part.category} parts={part.parts} handleClick={changeMenu} equippedParts={equippedParts}/>
                         </>
                     );  
                 })}
@@ -79,7 +79,7 @@ export default function Assembly({ currentMenu, setCurrentMenu, currentSelect, s
         return( 
             <>
             <div className='w-3/4'>
-                <PartsSelector category={currentMenu} parts={currentParts} handleClick={changeSelect} currentSelect={currentSelect} />
+                <PartsSelector currentMenu={currentMenu} setCurrentMenu={setCurrentMenu} parts={currentParts} setCurrentSelect={setCurrentSelect} currentSelect={currentSelect} />
                 <PartsBuilder currentSelect={currentSelect} currentMenu={currentMenu} currentPart={currentPart} setCurrentPart={setCurrentPart} currentEquipped={currentEquipped} setCurrentEquipped={setCurrentEquipped}/>
             </div>  
             </>
