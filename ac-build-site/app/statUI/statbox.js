@@ -2,7 +2,20 @@
 import { useState, useEffect } from 'react';
 import { Corners } from '../ui/corners.js';
 
-export function PartsStats({ currentMenu, currentSelect, currentPart }) {
+function parseAndMultiply(str) {
+  if(typeof str !== 'string') {
+    return str;
+  }
+  else if(str.includes('x')) {
+    const [num1, num2] = str.split('x').map(parseFloat); 
+    return num1*num2;
+  }
+  else {
+    return parseFloat(str);
+  }
+}
+
+export function PartsStats({ currentMenu, currentSelect, currentPart, currentEquipped }) {
 
     function StatsList(currentPart) {
   
@@ -33,93 +46,121 @@ export function PartsStats({ currentMenu, currentSelect, currentPart }) {
         //might be better to just make three arrays and then turn it into one and return that instead or even return as three so you can adjust the three separately
         const rawData = currentPart['currentPart'];
         let i = 2; //for the coloring for the partValues
-        for(let [key, value] of Object.entries(rawData)) {
-          if(key !== '_id' && key !== 'type') {
-
-            /*    PART TYPE/NAME    */
-            if(key === 'extra_type') {
-              if(value === 'none') {
-                value = currentSelect;
-              }
-              partType.unshift(
-                <div>
-                  <p>{value.toUpperCase()}</p>
-                </div>
-              );
-            }
-
-            else if(key === 'name' ) {
-              partType.splice(1, 0, (
-                <div>
-                  <p>{value}</p>
-                </div>
-              ));
-            }
-
-            /*    PART DESCRIPTION    */
-            else if(key === 'description') {
-              partInfo.push(
-                <div className="p-2 pt-1">
-                  <p className="">Part Info</p>
-                  <p>{value}</p>
-                </div>
-              );
-            }
-
-            /*    PART STATS    */
-            else {
-              const spec = convertToTitleCase(key);
-              if(i%2==0) {
-                partValues.push(
-                  <span className="flex justify-between bg-[rgb(42,54,77)] bg-opacity-80">
-                    <p className="pl-2">{spec}&nbsp;</p>
-                    <p className="pr-2">{value}</p>
-                  </span>
-                );
-              }
-              else {
-                partValues.push(
-                  <span className="flex justify-between bg-[rgb(48,59,81)] bg-opacity-80">
-                    <p className="pl-2">{spec}&nbsp;</p>
-                    <p className="pr-2">{value}</p>
-                  </span>
-                );
-              }
-              i++;
+        if(currentEquipped!==null) {
+          for(let [key, value] of Object.entries(rawData)) {
+            if(key !== '_id' && key !== 'type') {
   
+              /*    PART TYPE/NAME    */
+              if(key === 'extra_type') {
+                if(value === 'none') {
+                  value = currentSelect;
+                }
+                partType.unshift(
+                  <div>
+                    <p>{value.toUpperCase()}</p>
+                  </div>
+                );
+              }
+  
+              else if(key === 'name' ) {
+                partType.splice(1, 0, (
+                  <div>
+                    <p>{value}</p>
+                  </div>
+                ));
+              }
+  
+              /*    PART DESCRIPTION    */
+              else if(key === 'description') {
+                partInfo.push(
+                  <div className="p-2 pt-1">
+                    <p className="">Part Info</p>
+                    <p>{value}</p>
+                  </div>
+                );
+              }
+  
+              /*    PART STATS    */
+              else {
+                const spec = convertToTitleCase(key);
+                var renderedValue;
+                
+                var parsedCurrentEquipped = currentEquipped[key];
+                var parsedValue = value;
+                if(typeof currentEquipped[key] === 'string') {
+                  parsedCurrentEquipped = parseAndMultiply(currentEquipped[key]);
+                }
+                if(typeof value === 'string') {
+                  parsedValue = parseAndMultiply(value);
+                }
+  
+                if(parsedCurrentEquipped > parsedValue) {
+                  renderedValue=(<>{currentEquipped[key]} &#8594; <span className="text-red-600">{value}</span></>);
+                }
+                else if(parsedCurrentEquipped === parsedValue) {
+                  renderedValue=value;
+                }
+                else {
+                  console.log(value);
+                  renderedValue=(<>{currentEquipped[key]} &#8594; <span className="text-green-600">{value}</span></>);
+                }
+  
+                
+  
+                if(i%2==0) {
+                  partValues.push(
+                    <span className="flex justify-between bg-[rgb(42,54,77)] bg-opacity-80">
+                      <p className="pl-2">{spec}</p>
+                      <p className="pr-2">{renderedValue}</p>
+                    </span>
+                  );
+                }
+                else {
+                  partValues.push(
+                    <span className="flex justify-between bg-[rgb(48,59,81)] bg-opacity-80">
+                      <p className="pl-2">{spec}</p>
+                      <p className="pr-2">{renderedValue}</p>
+                    </span>
+                  );
+                }
+                i++;
+    
+              }
+              
             }
-            
           }
-        }
-        return(
-          <div className="h-full flex flex-col justify-between">
-            <div className="">
-              {partType} 
-            </div>
-
-            <div>
+          return(
+            <div className="h-full flex flex-col justify-between">
+              <div className="">
+                {partType} 
+              </div>
+  
               <div>
-                <div className="bg-[rgb(43,59,84)] bg-opacity-100 relative">
-                  {partInfo} 
+                <div>
+                  <div className="bg-[rgb(43,59,84)] bg-opacity-100 relative">
+                    {partInfo} 
+                    <Corners /> 
+                  </div>
+  
+                  <div className="flex h-[50vh] bg-[rgb(52,68,96)] items-center justify-center bg-opacity-80">
+                    <p>Place holder for image</p>
+                  </div>
+                </div>
+                
+  
+                <div className="bg-[rgb(43,59,84)] p-2 bg-opacity-80 relative">
+                  {partValues}
                   <Corners /> 
                 </div>
-
-                <div className="flex h-[50vh] bg-[rgb(52,68,96)] items-center justify-center bg-opacity-80">
-                  <p>Place holder for image</p>
-                </div>
+  
               </div>
               
-
-              <div className="bg-[rgb(43,59,84)] p-2 bg-opacity-80 relative">
-                {partValues}
-                <Corners /> 
-              </div>
-
             </div>
-            
-          </div>
-        );
-      }
+          );
+        }
+
+        }
+        
   
       
     }

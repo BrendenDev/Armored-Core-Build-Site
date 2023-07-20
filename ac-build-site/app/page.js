@@ -57,7 +57,7 @@ export default function Home() {
 
       {/*part stats container*/}
       <div className='w-[44.44%] mx-8 items-end justify-end'>
-        <PartsStats currentMenu={currentMenu} currentSelect={currentSelect} currentPart={currentPart}/>
+        <PartsStats currentMenu={currentMenu} currentSelect={currentSelect} currentPart={currentPart} currentEquipped={currentEquipped}/>
       </div>
 
       {/*frame stats container*/}
