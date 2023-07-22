@@ -1,8 +1,8 @@
 'use server'
 const { MongoClient, ServerApiVersion } = require('mongodb');
-const { dbPassword } = require("./../../config.json"); //for local testing
-const uri = `mongodb+srv://ReadUser:${dbPassword}@acbuildsite.id5i3hu.mongodb.net/?retryWrites=true&w=majority`; //for local testing
-//const uri = `mongodb+srv://ReadUser:${process.env.dbPassword}@acbuildsite.id5i3hu.mongodb.net/?retryWrites=true&w=majority`;
+//const { dbPassword } = require("./../../config.json"); //for local testing
+//const uri = `mongodb+srv://ReadUser:${dbPassword}@acbuildsite.id5i3hu.mongodb.net/?retryWrites=true&w=majority`; //for local testing
+const uri = `mongodb+srv://ReadUser:${process.env.dbPassword}@acbuildsite.id5i3hu.mongodb.net/?retryWrites=true&w=majority`; //for production
 
 //two databases: 
 //one, the online that is retrieved only when recorded db version isn't matching most recent db version
