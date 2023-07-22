@@ -96,11 +96,14 @@ export function PartsBuilder({ currentSelect, currentMenu, currentPart, setCurre
             const rawData = JSON.parse(localStorage.getItem(localQuery));
             
             const data = [];
-            for(let i = 0; i < rawData.length; i++) {
-                if(rawData[i]['type'] === query) {
-                    data.push(JSON.stringify(rawData[i]));
+            if(rawData!==null) {
+                for(let i = 0; i < rawData.length; i++) {
+                    if(rawData[i]['type'] === query) {
+                        data.push(JSON.stringify(rawData[i]));
+                    }
                 }
             }
+            
 
             
             setRenderedData(data);
