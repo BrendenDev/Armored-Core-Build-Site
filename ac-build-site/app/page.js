@@ -3,7 +3,6 @@ import Assembly from './building/assembly.js';
 import { useState, useEffect } from 'react';
 import { preloadData } from './building/db.js';
 import { PartsStats, FrameStats } from './statUI/statbox.js';
-import { Corners } from './ui/corners.js';
 
 function HomeButton({setCurrentMenu}) {
   return (
@@ -48,25 +47,24 @@ export default function Home() {
   }, []);
 
   return (
-    <main className="flex min-h-screen flex-row items-start justify-between px-20 py-16 font-agency-fb text-white no-text-cursor">
+    <main className="flex h-screen flex-row items-start justify-between py-16 font-agency-fb text-white no-text-cursor">
 
       {/*assembly container*/}
-      <div className="w-1/3 text-2x1 flex-col mx-8"> 
+      <div className="w-2/3 text-2x1 flex-col mx-[3vw]"> 
         <Assembly currentMenu={currentMenu} setCurrentMenu={setCurrentMenu} currentSelect={currentSelect} setCurrentSelect={setCurrentSelect} currentPart={currentPart} setCurrentPart={setCurrentPart} currentEquipped={currentEquipped} setCurrentEquipped={setCurrentEquipped} equippedParts={equippedParts}/>
       </div>
 
       {/*part stats container*/}
-      <div className='w-[44.44%] mx-8 items-end justify-end'>
+      <div className='w-2/3 mx-[3vw] items-end justify-end'>
         <PartsStats currentMenu={currentMenu} currentSelect={currentSelect} currentPart={currentPart} currentEquipped={currentEquipped}/>
       </div>
 
       {/*frame stats container*/}
-      <div className='w-[33.33%] mt-[70vh] bg-[rgb(37,49,74)] bg-opacity-80 mx-8 relative'>
+      <div className='w-2/3 mx-[3vw] relative h-full'>
         <FrameStats currentSelect={currentSelect} currentEquipped={currentEquipped} equippedParts={equippedParts} setEquippedParts={setEquippedParts}/>
-        <Corners />
       </div>
 
-      <div className='absolute bottom-[3vh] border-2 border-white w-[5vw] h-[5vh] hover:cursor-pointer'>
+      <div className='absolute top-[2vh] right-[3vw] px-[2vw] h-[5vh] border-[0.1rem] border-white hover:cursor-pointer'>
         <HomeButton setCurrentMenu={setCurrentMenu}/>
       </div>
     </main>

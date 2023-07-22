@@ -157,7 +157,7 @@ export function PartsBuilder({ currentSelect, currentMenu, currentPart, setCurre
 
         if(currentPart['name']===part['name']) {
             return(
-                <li key={index} className="relative text-center py-20 mx-10 my-2 bg-[rgb(101,117,131)]" onClick={() => setCurrentPart(part)}>
+                <li key={index} className="relative text-center py-20 mx-[15%] my-2 bg-[rgb(101,117,131)]" onClick={() => setCurrentPart(part)}>
                     <p>{part['name']}</p>
                     <Equippable part={part} setCurrentEquipped={setCurrentEquipped}/>
                 </li>
@@ -165,7 +165,7 @@ export function PartsBuilder({ currentSelect, currentMenu, currentPart, setCurre
         }
         else {
             return(
-                <li key={index} className="relative text-center py-20 mx-10 my-2 bg-[rgb(86,106,135)] hover:bg-[rgb(101,117,131)]" onClick={() => setCurrentPart(part)}>
+                <li key={index} className="relative text-center py-20 mx-[15%] my-2 bg-[rgb(86,106,135)] hover:bg-[rgb(101,117,131)]" onClick={() => setCurrentPart(part)}>
                     <p>{part['name']}</p>
                     <Equippable part={part} setCurrentEquipped={setCurrentEquipped}/>
                 </li>

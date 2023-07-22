@@ -330,9 +330,9 @@ export function FrameStats({currentSelect, currentEquipped, equippedParts, setEq
 
 
             return(
-                <div className="p-2">
+                <>
                     {renderedData}
-                </div>
+                </>
             );
             
         }
@@ -340,9 +340,13 @@ export function FrameStats({currentSelect, currentEquipped, equippedParts, setEq
     }
 
     return( 
-        <>
-            <RenderedStats />
-        </>
+      <div className="absolute bottom-0 w-full">
+        <div className="p-2 bg-[rgb(37,49,74)] bg-opacity-80 relative">
+          <RenderedStats />
+          <Corners />
+        </div>
+      </div>
+        
     );
 
     

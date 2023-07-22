@@ -11,12 +11,12 @@ function PartsOverview({ category, parts, handleClick, equippedParts }) { //cate
 
     const partElements = parts.map( (part, index) => {
         return (
-            <div key={index} className="my-[0.15rem] border-2 border-[rgb(52,64,80)] bg-[rgb(54,72,97)] hover:bg-[rgb(120,148,162)]" onClick={() => handleClick(category, part)}> {/* change hover to gradient please */}
-                <div className="f">
-                    <p className="pl-10 pt-1 text-xs text-[rgb(112,126,148)]">{part}</p>
+            <div key={index} className="my-[0.15rem] border-2 border-[rgb(52,64,80)] bg-[rgb(54,72,97)] hover:bg-[rgb(120,148,162)] h-[5vh]" onClick={() => handleClick(category, part)}> {/* change hover to gradient please */}
+                <div className="">
+                    <p className="pl-[15%] pt-1 text-xs text-[rgb(112,126,148)]">{part}</p>
                     {equippedParts && equippedParts[part] ? 
-                    (<p className="pl-10 pb-1 text-sm">{equippedParts[part]['name']}</p>) : 
-                    (<p className="pl-10 pb-1 text-sm">Not Selected</p>)}
+                    (<p className="pl-[15%] pb-1 text-sm">{equippedParts[part]['name']}</p>) : 
+                    (<p className="pl-[15%] pb-1 text-sm">Not Selected</p>)}
                 </div>
             </div>
         );
@@ -78,7 +78,7 @@ export default function Assembly({ currentMenu, setCurrentMenu, currentSelect, s
         const currentParts = partCategories.find((part) => part.category === currentMenu).parts; //find object category of currentMenu, and then retrieve parts in that object
         return( 
             <>
-            <div className='w-3/4'>
+            <div className='w-full'>
                 <PartsSelector currentMenu={currentMenu} setCurrentMenu={setCurrentMenu} parts={currentParts} setCurrentSelect={setCurrentSelect} currentSelect={currentSelect} />
                 <PartsBuilder currentSelect={currentSelect} currentMenu={currentMenu} currentPart={currentPart} setCurrentPart={setCurrentPart} currentEquipped={currentEquipped} setCurrentEquipped={setCurrentEquipped}/>
             </div>  
