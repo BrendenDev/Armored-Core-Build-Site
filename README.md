@@ -4,3 +4,4 @@
 - Next.js
 - MongoDB
 - Tailwind
+- Vercel

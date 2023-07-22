@@ -5,9 +5,9 @@
 
 
 ## Project Making
-- [ ] A reason why it lags so much between switching categories (not sub-categories) is because it over writes the old list of parts from the other category (I'm pretty sure). 
+- [ ] Fix bug that equips a frame part sometimes when traversing between menus and selects
 
-- [ ] Make it so when you select another part tab, it automatically goes to the stats of the equipped part
+- [ ] Make it so when you select another part tab, it automatically scrolls to the stats of the equipped part
 
 - [ ] Compare parts list, add little compare button to add to list
 

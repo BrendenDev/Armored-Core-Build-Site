@@ -30,8 +30,8 @@ export function PartsStats({ currentMenu, currentSelect, currentPart, currentEqu
         
         return result.trim();
       }
-      
-      if(currentMenu === 'default' || currentPart === null) {
+
+      if(currentMenu === 'default' || !currentPart['currentPart']) {
         return(
           <>
           </>
@@ -45,8 +45,7 @@ export function PartsStats({ currentMenu, currentSelect, currentPart, currentEqu
         
         //might be better to just make three arrays and then turn it into one and return that instead or even return as three so you can adjust the three separately
         const rawData = currentPart['currentPart'];
-        let i = 2; //for the coloring for the partValues
-        if(currentEquipped!==null) {
+        let i = 2; //coloring for the partValues
           for(let [key, value] of Object.entries(rawData)) {
             if(key !== '_id' && key !== 'type') {
   
@@ -81,7 +80,7 @@ export function PartsStats({ currentMenu, currentSelect, currentPart, currentEqu
               }
   
               /*    PART STATS    */
-              else {
+              else if(currentEquipped){ //if currentEquipped is a value
                 const spec = convertToTitleCase(key);
                 var renderedValue;
                 
@@ -101,11 +100,8 @@ export function PartsStats({ currentMenu, currentSelect, currentPart, currentEqu
                   renderedValue=value;
                 }
                 else {
-                  console.log(value);
                   renderedValue=(<>{currentEquipped[key]} &#8594; <span className="text-green-600">{value}</span></>);
                 }
-  
-                
   
                 if(i%2==0) {
                   partValues.push(
@@ -124,7 +120,31 @@ export function PartsStats({ currentMenu, currentSelect, currentPart, currentEqu
                   );
                 }
                 i++;
+  
+                
     
+              }
+              else {
+
+                const spec = convertToTitleCase(key);
+                if(i%2==0) {
+                  partValues.push(
+                    <span className="flex justify-between bg-[rgb(42,54,77)] bg-opacity-80">
+                      <p className="pl-2">{spec}</p>
+                      <p className="pr-2">{value}</p>
+                    </span>
+                  );
+                }
+                else {
+                  partValues.push(
+                    <span className="flex justify-between bg-[rgb(48,59,81)] bg-opacity-80">
+                      <p className="pl-2">{spec}</p>
+                      <p className="pr-2">{value}</p>
+                    </span>
+                  );
+                }
+                i++;
+                 
               }
               
             }
@@ -157,7 +177,7 @@ export function PartsStats({ currentMenu, currentSelect, currentPart, currentEqu
               
             </div>
           );
-        }
+    
 
         }
         
@@ -198,7 +218,11 @@ export function FrameStats({currentSelect, currentEquipped, equippedParts, setEq
     useEffect(() => {
         const frameData = {};
         allSelects.forEach((part) => {
-            frameData[part] = JSON.parse(localStorage.getItem(part));
+            const data = localStorage.getItem(part);
+            if(data) {
+              frameData[part] = JSON.parse(data);
+            }
+            
         });
         setEquippedParts(frameData);
 

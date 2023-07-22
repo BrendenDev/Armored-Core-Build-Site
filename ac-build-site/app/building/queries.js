@@ -1,6 +1,6 @@
 'use client'
 
-function partQueryMaker(currentSelect) {
+export function partQueryMaker(currentSelect) {
 
   if(currentSelect === 'R-ARM UNIT' || currentSelect === 'L-ARM UNIT') {
       return 'arm'; //original, non-preload, get from db query was: return {type: {$regex: 'arm'}};

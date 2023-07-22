@@ -1,6 +1,6 @@
 'use client'
 import {useState, useEffect} from 'react';
-import { getPartQuery, menuQueryMaker } from './queries.js';
+import { getPartQuery } from './queries.js';
 import { Corners } from '../ui/corners.js';
 
 export function PartsSelector({ currentMenu, setCurrentMenu, parts, setCurrentSelect, currentSelect }) {
@@ -84,44 +84,42 @@ export function PartsSelector({ currentMenu, setCurrentMenu, parts, setCurrentSe
 
 export function PartsBuilder({ currentSelect, currentMenu, currentPart, setCurrentPart, currentEquipped, setCurrentEquipped }) {
 
-    const [renderedData, setRenderedData] = useState([]);
+    const [renderedData, setRenderedData] = useState(null);
 
 
     useEffect(() => {
-        const fetchData = () => { //can move this to useEffect in page.js to truly preload
-            const query = getPartQuery(currentSelect); //this has to be an await despite grabbing from local storage
-            const localQuery = currentMenu.toLowerCase() + "_data";
-            
-            //DATA NOT RECIEVING IN DATA, TEST FOR THAT
-            const rawData = JSON.parse(localStorage.getItem(localQuery));
-            
-            const data = [];
-            if(rawData!==null) {
-                for(let i = 0; i < rawData.length; i++) {
-                    if(rawData[i]['type'] === query) {
-                        data.push(JSON.stringify(rawData[i]));
-                    }
+        const data = [];
+        const query = getPartQuery(currentSelect); //this has to be an await despite grabbing from local storage
+        const localQuery = currentMenu.toLowerCase() + "_data";
+        
+        //DATA NOT RECIEVING IN DATA, TEST FOR THAT
+        const rawData = JSON.parse(localStorage.getItem(localQuery));
+        if(rawData) {
+            for(let i = 0; i < rawData.length; i++) {
+                if(rawData[i]['type'] === query) {
+                    data.push(JSON.stringify(rawData[i]));
                 }
             }
-            
-
-            
-            setRenderedData(data);
         }
-        fetchData();
+        setRenderedData(data);
+            
+        const equipped = JSON.parse(localStorage.getItem(currentSelect));
+        if(equipped) {
+            setCurrentEquipped(equipped);
+            setCurrentPart(equipped);
+        }
+        
+        else if(data[0]){
+            setCurrentEquipped(null);
+            const parsedData = JSON.parse(data[0]);
+            setCurrentPart(parsedData);
+        }
+
         
 
-        const checkEquipped = async () => {
-            if(localStorage.getItem(currentSelect) != "[object Object]") {
-                setCurrentEquipped(JSON.parse(localStorage.getItem(currentSelect)));
-            }
-            
-        }
-        checkEquipped();
+    }, [currentSelect, currentMenu]);
 
-    }, [currentSelect]);
-
-    function Equippable({part, changeCurrentEquipped}) {
+    function Equippable({part, setCurrentEquipped}) {
         try {
             if(part['name'] === currentEquipped['name']) {
                 return(
@@ -132,7 +130,7 @@ export function PartsBuilder({ currentSelect, currentMenu, currentPart, setCurre
             }
             else {
                 return(
-                    <div className="absolute w-3/4 border-white border-2 bottom-0 left-[50%] -translate-x-[50%] hover:cursor-pointer" onClick={(event) => {event.stopPropagation();  changeCurrentEquipped(part);}}>
+                    <div className="absolute w-3/4 border-white border-2 bottom-0 left-[50%] -translate-x-[50%] hover:cursor-pointer" onClick={(event) => {event.stopPropagation();  setCurrentEquipped(part);}}>
                         <p>Equip Part</p>
                     </div>
                 );
@@ -140,7 +138,7 @@ export function PartsBuilder({ currentSelect, currentMenu, currentPart, setCurre
         }
         catch (error) {
             return(
-                <div className="absolute w-3/4 border-white border-2 bottom-0 left-[50%] -translate-x-[50%] hover:cursor-pointer" onClick={(event) => {event.stopPropagation();  changeCurrentEquipped(part);}}>
+                <div className="absolute w-3/4 border-white border-2 bottom-0 left-[50%] -translate-x-[50%] hover:cursor-pointer" onClick={(event) => {event.stopPropagation();  setCurrentEquipped(part);}}>
                     <p>Equip Part</p>
                 </div>
             );
@@ -151,36 +149,25 @@ export function PartsBuilder({ currentSelect, currentMenu, currentPart, setCurre
 
     useEffect(() => {
         localStorage.setItem(currentSelect, JSON.stringify(currentEquipped));
-        if(currentEquipped !== null && currentEquipped['type'] !== currentSelect) { //sets the currentPart (stat preview) to the equipped part when you change select
-            setCurrentPart(currentEquipped);
-        }
     }, [currentEquipped]);
 
-    function changeCurrentEquipped(part) {
-        setCurrentEquipped(part);
-    }
-
-    function changeCurrentPart(part) {
-        setCurrentPart(part);
-    }
-
-    function Part({ partData, index, changeCurrentPart }) {
+    function Part({ partData, index, currentPart, setCurrentPart }) {
         const part = JSON.parse(partData);
         
 
         if(currentPart['name']===part['name']) {
             return(
-                <li key={index} className="relative text-center py-20 mx-10 my-2 bg-[rgb(101,117,131)]" onClick={() => changeCurrentPart(part)}>
+                <li key={index} className="relative text-center py-20 mx-10 my-2 bg-[rgb(101,117,131)]" onClick={() => setCurrentPart(part)}>
                     <p>{part['name']}</p>
-                    <Equippable part={part} changeCurrentEquipped={changeCurrentEquipped}/>
+                    <Equippable part={part} setCurrentEquipped={setCurrentEquipped}/>
                 </li>
             );
         }
         else {
             return(
-                <li key={index} className="relative text-center py-20 mx-10 my-2 bg-[rgb(86,106,135)] hover:bg-[rgb(101,117,131)]" onClick={() => changeCurrentPart(part)}>
+                <li key={index} className="relative text-center py-20 mx-10 my-2 bg-[rgb(86,106,135)] hover:bg-[rgb(101,117,131)]" onClick={() => setCurrentPart(part)}>
                     <p>{part['name']}</p>
-                    <Equippable part={part} changeCurrentEquipped={changeCurrentEquipped}/>
+                    <Equippable part={part} setCurrentEquipped={setCurrentEquipped}/>
                 </li>
             );
         }
@@ -189,16 +176,22 @@ export function PartsBuilder({ currentSelect, currentMenu, currentPart, setCurre
 
     }
 
-    return( //make div background a gradient
+    return(
         <div className="bg-gradient-to-b from-custom-gradient-start via-custom-gradient-mid to-custom-gradient-end relative"> 
             <div className="overflow-y-auto h-full max-h-[75vh] no-scrollbar">
                 <ul className="list-none p-0">
                     {
-                        renderedData.map((partData, index) => (
-                            <>
-                               <Part partData={partData} key={index} changeCurrentPart={changeCurrentPart}/>
-                            </>    
-                        ))
+                        (renderedData!==null ? (
+                            renderedData.map((partData, index) => (
+                                <>
+                                <Part partData={partData} key={index} currentPart={currentPart} setCurrentPart={setCurrentPart}/>
+                                </>    
+                            ))) : 
+                            (
+                                <>
+                                </>
+                            )
+                        )
                     }
                 </ul>
             </div>

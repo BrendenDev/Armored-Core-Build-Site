@@ -20,13 +20,13 @@ export default function Home() {
 
   const [currentMenu, setCurrentMenu] = useState('default'); //menus: default, unit, frame, inner, expansion
 
-  const [currentSelect, setCurrentSelect] = useState(""); //selects: the sub-categories of unit, frame, inner, and expansion
+  const [currentSelect, setCurrentSelect] = useState(null); //selects: the sub-categories of unit, frame, inner, and expansion
 
-  const [currentPart, setCurrentPart] = useState(""); //current part of stats displayed: all the parts of the sub-categories
+  const [currentPart, setCurrentPart] = useState(null); //current part of stats displayed: all the parts of the sub-categories
 
-  const [currentEquipped, setCurrentEquipped] = useState(""); //current equipped part, not just selected (applies to overall stats, not just viewing)
+  const [currentEquipped, setCurrentEquipped] = useState(null); //current equipped part, not just selected (applies to overall stats, not just viewing)
 
-  const [equippedParts, setEquippedParts] = useState(); //ALL current equipped parts
+  const [equippedParts, setEquippedParts] = useState(null); //ALL current equipped parts
   
 
   useEffect(() => {
