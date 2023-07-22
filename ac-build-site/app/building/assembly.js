@@ -13,10 +13,10 @@ function PartsOverview({ category, parts, handleClick, equippedParts }) { //cate
         return (
             <div key={index} className="my-[0.15rem] border-2 border-[rgb(52,64,80)] bg-[rgb(54,72,97)] hover:bg-[rgb(120,148,162)] h-[5vh]" onClick={() => handleClick(category, part)}> {/* change hover to gradient please */}
                 <div className="">
-                    <p className="pl-[15%] pt-1 text-xs text-[rgb(112,126,148)]">{part}</p>
+                    <p className="pl-[7%] pt-1 text-xs text-[rgb(112,126,148)]">{part}</p>
                     {equippedParts && equippedParts[part] ? 
-                    (<p className="pl-[15%] pb-1 text-sm">{equippedParts[part]['name']}</p>) : 
-                    (<p className="pl-[15%] pb-1 text-sm">Not Selected</p>)}
+                    (<p className="pl-[7%] pb-1 text-sm">{equippedParts[part]['name']}</p>) : 
+                    (<p className="pl-[7%] pb-1 text-sm">Not Selected</p>)}
                 </div>
             </div>
         );
@@ -62,7 +62,7 @@ export default function Assembly({ currentMenu, setCurrentMenu, currentSelect, s
 
     if(currentMenu === 'default') {
         return (
-            <div className="pt-4">
+            <div className="">
                 {partCategories.map((part, index) => { //map all the parts
                     return (
                         <>

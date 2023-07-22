@@ -178,7 +178,7 @@ export function PartsBuilder({ currentSelect, currentMenu, currentPart, setCurre
 
     return(
         <div className="bg-gradient-to-b from-custom-gradient-start via-custom-gradient-mid to-custom-gradient-end relative"> 
-            <div className="overflow-y-auto h-full max-h-[75vh] no-scrollbar">
+            <div className="overflow-y-auto h-full max-h-[80vh] no-scrollbar">
                 <ul className="list-none p-0">
                     {
                         (renderedData!==null ? (

@@ -150,7 +150,7 @@ export function PartsStats({ currentMenu, currentSelect, currentPart, currentEqu
             }
           }
           return(
-            <div className="h-full flex flex-col justify-between">
+            <div className="h-full flex flex-col overflow-auto no-scrollbar pt-[4vh]">
               <div className="">
                 {partType} 
               </div>
@@ -186,7 +186,7 @@ export function PartsStats({ currentMenu, currentSelect, currentPart, currentEqu
     }
   
     return (
-        <div className="text-center h-[85vh]">
+        <div className="text-center h-[95vh]">
               <StatsList currentPart={currentPart}/>
         </div>
     );
