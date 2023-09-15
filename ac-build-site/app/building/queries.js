@@ -1,16 +1,21 @@
 'use client'
 
 export function partQueryMaker(currentSelect) {
-
-  if(currentSelect === 'R-ARM UNIT' || currentSelect === 'L-ARM UNIT') {
-      return 'arm'; //original, non-preload, get from db query was: return {type: {$regex: 'arm'}};
-  }
-  else if(currentSelect === 'R-BACK UNIT' || currentSelect === 'L-BACK UNIT') {
-      return 'back';
-  }
-  else {
-      return currentSelect.toLowerCase();
-  }
+      //change from R-ARM UNIT to R-Arm Unit or CAPS to Caps
+      return currentSelect.split(' ') // Split the string by spaces
+      .map((word) => {
+        if (word.includes('-')) {
+          // If the word contains a hyphen, split it and capitalize each part
+          const parts = word.split('-');
+          return parts
+            .map((part) => part.charAt(0).toUpperCase() + part.slice(1).toLowerCase())
+            .join('-'); // Join the parts back together with a hyphen
+        } else {
+          // Otherwise, capitalize the entire word
+          return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+        }
+      })
+      .join(' ');
   
 }
 

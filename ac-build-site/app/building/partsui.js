@@ -95,8 +95,11 @@ export function PartsBuilder({ currentSelect, currentMenu, currentPart, setCurre
         //DATA NOT RECIEVING IN DATA, TEST FOR THAT
         const rawData = JSON.parse(localStorage.getItem(localQuery));
         if(rawData) {
+            console.log(rawData[0]['type']);
+            console.log(query);
             for(let i = 0; i < rawData.length; i++) {
                 if(rawData[i]['type'] === query) {
+                    console.log('hi');
                     data.push(JSON.stringify(rawData[i]));
                 }
             }

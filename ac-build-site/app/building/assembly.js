@@ -11,7 +11,7 @@ function PartsOverview({ category, parts, handleClick, equippedParts }) { //cate
 
     const partElements = parts.map( (part, index) => {
         return (
-            <div key={index} className="my-[0.15rem] border-2 border-[rgb(52,64,80)] bg-[rgb(54,72,97)] hover:bg-[rgb(120,148,162)] h-[5vh]" onClick={() => handleClick(category, part)}> {/* change hover to gradient please */}
+            <div key={index} className="my-[0.15rem] border-2 border-[rgb(52,64,80)] bg-[rgb(54,72,97)] hover:bg-[rgb(120,148,162)] h-[5vh] overflow-auto no-scrollbar" onClick={() => handleClick(category, part)}> {/* change hover to gradient please */}
                 <div className="">
                     <p className="pl-[7%] pt-1 text-xs text-[rgb(112,126,148)]">{part}</p>
                     {equippedParts && equippedParts[part] ? 

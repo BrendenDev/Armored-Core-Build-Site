@@ -1,6 +1,10 @@
 'use server'
+
+import { parse } from 'dotenv';
+
 const { MongoClient, ServerApiVersion } = require('mongodb');
 const uri = `mongodb+srv://ReadUser:${process.env.dbPassword}@acbuildsite.id5i3hu.mongodb.net/?retryWrites=true&w=majority`; //for production
+const dbName = "ACDatabase1";
 
 //two databases: 
 //one, the online that is retrieved only when recorded db version isn't matching most recent db version
@@ -44,13 +48,26 @@ async function checkDBUpdated(version) {
 }
 
 async function loadData() { //here we can check for which database like "ACPreRelease" or "ACv1.0.0"
-  const unitData = await client.db("ACDatabasePreRelease").collection("ACUnitSpecs").find().toArray();
-  const frameData = await client.db("ACDatabasePreRelease").collection("ACFrameSpecs").find().toArray();
-  const innerData = await client.db("ACDatabasePreRelease").collection("ACInnerSpecs").find().toArray();
-  const expansionData = await client.db("ACDatabasePreRelease").collection("ACExpansionSpecs").find().toArray();
+  const unitData = await client.db(dbName).collection("ACUnitSpecs").find().toArray();
+  const frameData = await client.db(dbName).collection("ACFrameSpecs").find().toArray();
+  const innerData = await client.db(dbName).collection("ACInnerSpecs").find().toArray();
+  const expansionData = await client.db(dbName).collection("ACExpansionSpecs").find().toArray();
+
+  
 
   const data = [unitData, frameData, innerData, expansionData];
-  return data;
+
+  const parsedData = data.map(ar => {
+    ar.map( obj => {
+      obj._id = obj._id.toString();
+      return obj;
+    });
+    return ar;
+  });
+
+  //console.log(parsedData[0]);
+
+  return parsedData;
 }
 
 
