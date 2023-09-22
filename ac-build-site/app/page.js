@@ -47,24 +47,24 @@ export default function Home() {
   }, []);
 
   return (
-    <main className="flex h-screen flex-row items-start justify-between py-[5vh] font-agency-fb text-white no-text-cursor">
+    <main className="flex h-screen flex-row items-start justify-around py-[5vh] font-agency-fb text-white no-text-cursor">
 
       {/*assembly container*/}
-      <div className="w-2/3 text-2x1 flex-col mx-[2vw]"> 
+      <div className="w-[25%] text-2x1 flex-col"> 
         <Assembly currentMenu={currentMenu} setCurrentMenu={setCurrentMenu} currentSelect={currentSelect} setCurrentSelect={setCurrentSelect} currentPart={currentPart} setCurrentPart={setCurrentPart} currentEquipped={currentEquipped} setCurrentEquipped={setCurrentEquipped} equippedParts={equippedParts}/>
       </div>
 
       {/*part stats container*/}
-      <div className='w-2/3 mx-[2vw] items-end justify-end'>
+      <div className='w-[35%] items-end justify-end'>
         <PartsStats currentMenu={currentMenu} currentSelect={currentSelect} currentPart={currentPart} currentEquipped={currentEquipped}/>
       </div>
 
       {/*frame stats container*/}
-      <div className='w-2/3 mx-[2vw] relative h-full'>
+      <div className='w-[25%] relative h-full flex items-center'>
         <FrameStats currentSelect={currentSelect} currentEquipped={currentEquipped} equippedParts={equippedParts} setEquippedParts={setEquippedParts}/>
       </div>
 
-      <div className='absolute top-[2vh] right-[3vw] border-[0.1rem] border-white hover:cursor-pointer'>
+      <div className='absolute top-[2vh] right-[17.5%] border-[0.1rem] border-white hover:cursor-pointer'>
         <HomeButton setCurrentMenu={setCurrentMenu}/>
       </div>
     </main>

@@ -55,14 +55,14 @@ export function PartsSelector({ currentMenu, setCurrentMenu, parts, setCurrentSe
         if(part === currentSelect) {
             return (
                 <div key={index} className="flex-grow basis-0 bg-[rgb(77,98,127)]" onClick={() => setCurrentSelect(part)}> {/* change hover to gradient please */}
-                    <h1 className="py-2 text-center">{part}</h1>
+                    <h1 className="py-2 text-center">{part.replace(" UNIT", "")}</h1> {/*Removing "unit" from text title cuz it looks better. Not changing querying or anythinig*/}
                 </div> 
             );
         }
         else {
             return (
                 <div key={index} className="flex-grow basis-0 bg-[rgb(35,50,67)] hover:bg-[rgb(120,148,162)]" onClick={() => setCurrentSelect(part)}>
-                    <h1 className="py-2 text-center">{part}</h1>
+                    <h1 className="py-2 text-center">{part.replace(" UNIT", "")}</h1>
                 </div> 
             );
         }
@@ -95,11 +95,10 @@ export function PartsBuilder({ currentSelect, currentMenu, currentPart, setCurre
         //DATA NOT RECIEVING IN DATA, TEST FOR THAT
         const rawData = JSON.parse(localStorage.getItem(localQuery));
         if(rawData) {
-            console.log(rawData[0]['type']);
-            console.log(query);
+            //console.log(rawData[0]['type']);
+            //console.log(query); //debugging for part query
             for(let i = 0; i < rawData.length; i++) {
                 if(rawData[i]['type'] === query) {
-                    console.log('hi');
                     data.push(JSON.stringify(rawData[i]));
                 }
             }
@@ -154,17 +153,27 @@ export function PartsBuilder({ currentSelect, currentMenu, currentPart, setCurre
         localStorage.setItem(currentSelect, JSON.stringify(currentEquipped));
     }, [currentEquipped]);
 
-    function Part({ partData, index, currentPart, setCurrentPart }) {
+    function Part({ partData, index, currentPart, setCurrentPart, currentEquipped }) {
         const part = JSON.parse(partData);
         
 
-        if(currentPart['name']===part['name']) {
-            return(
-                <li key={index} className="relative text-center py-20 mx-[15%] my-2 bg-[rgb(101,117,131)]" onClick={() => setCurrentPart(part)}>
-                    <p>{part['name']}</p>
-                    <Equippable part={part} setCurrentEquipped={setCurrentEquipped}/>
-                </li>
-            );
+        if(currentPart['name']===part['name'] || part['name'] === currentEquipped['name']) {
+            if(part['name'] === currentEquipped['name']) {
+                return(
+                    <li key={index} className="relative text-center py-20 mx-[15%] my-2 bg-[rgb(0,80,100)]" onClick={() => setCurrentPart(part)}>
+                        <p>{part['name']}</p>
+                        <Equippable part={part} setCurrentEquipped={setCurrentEquipped}/>
+                    </li>
+                );
+            }
+            else {
+                return(
+                    <li key={index} className="relative text-center py-20 mx-[15%] my-2 bg-[rgb(101,117,131)]" onClick={() => setCurrentPart(part)}>
+                        <p>{part['name']}</p>
+                        <Equippable part={part} setCurrentEquipped={setCurrentEquipped}/>
+                    </li>
+                );
+            }
         }
         else {
             return(
@@ -187,7 +196,7 @@ export function PartsBuilder({ currentSelect, currentMenu, currentPart, setCurre
                         (renderedData!==null ? (
                             renderedData.map((partData, index) => (
                                 <>
-                                <Part partData={partData} key={index} currentPart={currentPart} setCurrentPart={setCurrentPart}/>
+                                <Part partData={partData} key={index} currentPart={currentPart} setCurrentPart={setCurrentPart} currentEquipped={currentEquipped}/>
                                 </>    
                             ))) : 
                             (

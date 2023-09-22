@@ -1,7 +1,4 @@
 'use server'
-
-import { parse } from 'dotenv';
-
 const { MongoClient, ServerApiVersion } = require('mongodb');
 const uri = `mongodb+srv://ReadUser:${process.env.dbPassword}@acbuildsite.id5i3hu.mongodb.net/?retryWrites=true&w=majority`; //for production
 const dbName = "ACDatabase1";

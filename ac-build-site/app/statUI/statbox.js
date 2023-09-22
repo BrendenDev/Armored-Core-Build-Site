@@ -19,7 +19,7 @@ export function PartsStats({ currentMenu, currentSelect, currentPart, currentEqu
 
     function StatsList(currentPart) {
   
-      function convertToTitleCase(str) {
+      function convertToTitleCase(str) { //need to be able to cap EN and QB and any other targetted words
         let words = str.split('_');
         let result = '';
         
@@ -195,23 +195,81 @@ export function PartsStats({ currentMenu, currentSelect, currentPart, currentEqu
 
 export function FrameStats({currentSelect, currentEquipped, equippedParts, setEquippedParts}) {
 
-    const [stats, setStats] = useState({
+    const defaultStats = {
+      /*****************OVERViEW STATS********************/ 
+      //AP
+      //Defensive Performance
+      //Attitude Stability
+      //Boost Speed
+      //Current Load
+      //Current EN Load
+      /********************************************/ //defensive performance = average of stats ending "defense"
       armour_points: 0,
-      defensive_performance: 0,
+      anti_kinetic_defense: 0,
+      anti_energy_defense: 0,
+      anti_explosive_defense: 0,
       attitude_stability: 0,
+      attitude_recover: 0,
+      /********************************************/
+      target_tracking: 0,
+      /********************************************/
       boost_speed: 0,
+      qb_speed: 0,
+      qb_en_consumption: 0,
+      qb_reload_time: 0,
+      /********************************************/
+      en_capacity: 0,
+      en_supply_efficiency: 0,
+      en_recharge_delay: 0,
+      /********************************************/
+      total_weight: 0,
+      /********************************************/
+      total_arms_load: 0,
+      arms_load_limit: 0, 
+      total_load: 0,
+      load_limit: 0,
+      total_en_load: 0,
+      en_output: 0,
+      /********************************************/
       current_load: 0,
+      current_arms_load: 0,
       current_en_load: 0
-    }); 
-    const allSelects = ["R-ARM UNIT", "L-ARM UNIT", "R-BACK UNIT", "L-BACK UNIT", "HEAD", "CORE", "ARMS", "LEGS", "BOOSTER", "FCS", "GENERATOR", "EXPANSION"];
-    const statContributors = {
-        armour_points: ['armour_points'],
-        defensive_performance: [],
-        attitude_stability: [],
-        boost_speed: [],
-        current_load: ['weight'],
-        current_en_load: ['en_load']
+    };
 
+    const [stats, setStats] = useState(defaultStats); 
+    const allSelects = ["R-ARM", "L-ARM", "R-BACK", "L-BACK", "HEAD", "CORE", "ARMS", "LEGS", "BOOSTER", "FCS", "GENERATOR", "EXPANSION"];
+    const statContributors = {
+      /********************************************/
+      armour_points: [],
+      anti_kinetic_defense: [],
+      anti_energy_defense: [],
+      anti_explosive_defense: [],
+      attitude_stability: [],
+      attitude_recover: [],
+      /********************************************/
+      target_tracking: [],
+      /********************************************/
+      boost_speed: [],
+      qb_speed: [],
+      qb_en_consumption: [],
+      qb_reload_time: [],
+      /********************************************/
+      en_capacity: [],
+      en_supply_efficiency: [],
+      en_recharge_delay: [],
+      /********************************************/
+      total_weight: [],
+      /********************************************/
+      total_arms_load: [],
+      arms_load_limit: [], 
+      total_load: [],
+      load_limit: [],
+      total_en_load: [],
+      en_output: [],
+      /********************************************/
+      current_load: [],
+      current_arms_load: [],
+      current_en_load: []
     };
     
 
@@ -253,16 +311,6 @@ export function FrameStats({currentSelect, currentEquipped, equippedParts, setEq
             const newEquippedPart = JSON.parse(localStorage.getItem(currentSelect));
             frameData[currentSelect] = newEquippedPart;
             setEquippedParts(frameData);
-
-            const statData = {
-              armour_points: 0,
-              defensive_performance: 0,
-              attitude_stability: 0,
-              boost_speed: 0,
-              current_load: 0,
-              current_en_load: 0
-            }; 
-
     
             //i don't know what happened here. I just know my brain exploded writing this and I probably won't remember how this works
             for(let part of Object.values(frameData)) {
@@ -270,6 +318,7 @@ export function FrameStats({currentSelect, currentEquipped, equippedParts, setEq
                   for(let [partSpec, partValue] of Object.entries(part)) {
                       for(let [spec, acceptableSpecs] of Object.entries(statContributors)) {
                           if(acceptableSpecs.includes(partSpec)) {
+                            if(acceptableSpecs)
                               //console.log("adding " + spec + " as " + partValue + " from " + partName); //in the first for loop, change to let [partName, part] of Object.entries
                               statData[spec] += parseFloat(partValue);
                           }
@@ -280,7 +329,7 @@ export function FrameStats({currentSelect, currentEquipped, equippedParts, setEq
           }
                 
 
-            setStats(statData);
+            setStats(defaultStats);
 
             //console.log(statData);
 
@@ -340,8 +389,8 @@ export function FrameStats({currentSelect, currentEquipped, equippedParts, setEq
     }
 
     return( 
-      <div className="absolute bottom-0 w-full">
-        <div className="p-2 bg-[rgb(37,49,74)] bg-opacity-80 relative">
+      <div className="flex w-full self-center">
+        <div className="p-2 bg-[rgb(37,49,74)] w-full self-center bg-opacity-80 relative">
           <RenderedStats />
           <Corners />
         </div>

@@ -1,21 +1,28 @@
 'use client'
 
 export function partQueryMaker(currentSelect) {
-      //change from R-ARM UNIT to R-Arm Unit or CAPS to Caps
-      return currentSelect.split(' ') // Split the string by spaces
-      .map((word) => {
-        if (word.includes('-')) {
-          // If the word contains a hyphen, split it and capitalize each part
-          const parts = word.split('-');
-          return parts
-            .map((part) => part.charAt(0).toUpperCase() + part.slice(1).toLowerCase())
-            .join('-'); // Join the parts back together with a hyphen
-        } else {
-          // Otherwise, capitalize the entire word
-          return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
-        }
-      })
-      .join(' ');
+  //part query exceptions
+  if(currentSelect.toLowerCase() === "fcs") {
+    return 'FCS';
+  }
+  //normal case
+  else {
+    //change from R-ARM UNIT to R-Arm Unit or CAPS to Caps
+    return currentSelect.split(' ') // Split the string by spaces
+    .map((word) => {
+      if (word.includes('-')) {
+        // If the word contains a hyphen, split it and capitalize each part
+        const parts = word.split('-');
+        return parts
+          .map((part) => part.charAt(0).toUpperCase() + part.slice(1).toLowerCase())
+          .join('-'); // Join the parts back together with a hyphen
+      } else {
+        // Otherwise, capitalize the entire word
+        return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+      }
+    })
+    .join(' ');
+  }
   
 }
 
