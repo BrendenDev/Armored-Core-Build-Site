@@ -1,6 +1,7 @@
 'use client'
 import { useState, useEffect } from 'react';
 import { Corners } from '../ui/corners.js';
+import { render } from 'react-dom';
 
 function parseAndMultiply(str) {
   if(typeof str !== 'string') {
@@ -209,7 +210,7 @@ export function FrameStats({currentSelect, currentEquipped, equippedParts, setEq
       anti_energy_defense: 0,
       anti_explosive_defense: 0,
       attitude_stability: 0,
-      attitude_recover: 0,
+      attitude_recovery: 0,
       /********************************************/
       target_tracking: 0,
       /********************************************/
@@ -237,39 +238,39 @@ export function FrameStats({currentSelect, currentEquipped, equippedParts, setEq
     };
 
     const [stats, setStats] = useState(defaultStats); 
-    const allSelects = ["R-ARM", "L-ARM", "R-BACK", "L-BACK", "HEAD", "CORE", "ARMS", "LEGS", "BOOSTER", "FCS", "GENERATOR", "EXPANSION"];
+    const allSelects = ["R-ARM UNIT", "L-ARM UNIT", "R-BACK UNIT", "L-BACK", "HEAD", "CORE", "ARMS", "LEGS", "BOOSTER", "FCS", "GENERATOR", "EXPANSION"];
     const statContributors = {
       /********************************************/
-      armour_points: [],
-      anti_kinetic_defense: [],
-      anti_energy_defense: [],
-      anti_explosive_defense: [],
-      attitude_stability: [],
-      attitude_recover: [],
+      armour_points: ['ap'],
+      anti_kinetic_defense: ['anti-kinetic_defense'],
+      anti_energy_defense: ['anti-energy_defense'],
+      anti_explosive_defense: ['anti-explosive_defense'],
+      attitude_stability: ['attitude_stability'],
+      attitude_recovery: ['attitude_recovery'],
       /********************************************/
-      target_tracking: [],
+      target_tracking: ['target_tracking'],
       /********************************************/
-      boost_speed: [],
-      qb_speed: [],
-      qb_en_consumption: [],
-      qb_reload_time: [],
+      boost_speed: ['boost_speed'],
+      qb_speed: ['qb_speed'],
+      qb_en_consumption: ['qb_en_consumption'],
+      qb_reload_time: ['qb_reload_time'],
       /********************************************/
-      en_capacity: [],
-      en_supply_efficiency: [],
-      en_recharge_delay: [],
+      en_capacity: ['en_capacity'],
+      en_supply_efficiency: ['en_supply_efficiency'],
+      en_recharge_delay: ['en_recharge_delay'],
       /********************************************/
-      total_weight: [],
+      total_weight: ['total_weight'],
       /********************************************/
-      total_arms_load: [],
-      arms_load_limit: [], 
-      total_load: [],
-      load_limit: [],
-      total_en_load: [],
-      en_output: [],
+      total_arms_load: ['total_arms_load'],
+      arms_load_limit: ['arms_load_limit'], 
+      total_load: ['total_load'],
+      load_limit: ['load_limit'],
+      total_en_load: ['total_en_load'],
+      en_output: ['en_output'],
       /********************************************/
-      current_load: [],
-      current_arms_load: [],
-      current_en_load: []
+      current_load: ['current_load'],
+      current_arms_load: ['current_arms_load'],
+      current_en_load: ['current_en_load']
     };
     
 
@@ -311,6 +312,8 @@ export function FrameStats({currentSelect, currentEquipped, equippedParts, setEq
             const newEquippedPart = JSON.parse(localStorage.getItem(currentSelect));
             frameData[currentSelect] = newEquippedPart;
             setEquippedParts(frameData);
+
+            const statData = defaultStats;
     
             //i don't know what happened here. I just know my brain exploded writing this and I probably won't remember how this works
             for(let part of Object.values(frameData)) {
@@ -329,7 +332,7 @@ export function FrameStats({currentSelect, currentEquipped, equippedParts, setEq
           }
                 
 
-            setStats(defaultStats);
+            setStats(statData);
 
             //console.log(statData);
 
@@ -353,38 +356,75 @@ export function FrameStats({currentSelect, currentEquipped, equippedParts, setEq
 
 
     function RenderedStats() {
-        const renderedData = [];
-        if(stats !== null && stats !== undefined) {
-            let i = 2;
-            for(let [key, value] of Object.entries(stats)) {
-                const spec = convertToTitleCase(key);
-                if(i%2 === 0) {
-                  renderedData.push(
-                    <span className='flex justify-between bg-[rgb(42,54,77)] bg-opacity-80'>
-                      <p className='pl-2'>{spec}</p>
-                      <p className='pr-2'>{value}</p>
-                    </span>
-                  );
-                }
-                else {
-                  renderedData.push(
-                    <span className='flex justify-between bg-[rgb(48,59,81)] bg-opacity-80'>
-                      <p className='pl-2'>{spec}</p>
-                      <p className='pr-2'>{value}</p>
-                    </span>
-                  );
-                }
-                i++;
+      //for having the blank lines between certain stats in frame stats. A bit weird, but that's what all if statements are for down there (as well as for color swapping between lines)
+      const dataSeparate = ['attitude_recovery', 'target_tracking', 'qb_reload_time', 'en_recharge_delay', 'total_weight', 'en_output']; 
+      
+      const renderedData = [];
+      if(stats) {
+        let i = 2;
+        for(let [key, value] of Object.entries(stats)) {
+          const spec = convertToTitleCase(key);
+          if(i%2 === 0) {
+            if(dataSeparate.includes(key)) {
+              renderedData.push(
+                <span className='flex justify-between bg-[rgb(42,54,77)] bg-opacity-80'>
+                  <p className='pl-2'>{spec}</p>
+                  <p className='pr-2'>{value}</p>
+                </span>
+              );
+              renderedData.push(
+                <span className='flex justify-between bg-[rgb(48,59,81)] bg-opacity-80'>
+                  <p className='pl-2'>&#8203;</p>
+                  <p className='pr-2'>&#8203;</p>
+                </span>
+              );
+              i++;
             }
-
-
-            return(
-                <>
-                    {renderedData}
-                </>
-            );
-            
+            else {
+              renderedData.push(
+                <span className='flex justify-between bg-[rgb(42,54,77)] bg-opacity-80'>
+                  <p className='pl-2'>{spec}</p>
+                  <p className='pr-2'>{value}</p>
+                </span>
+              );
+            }
+          }
+          else {
+            if(dataSeparate.includes(key)) {
+              renderedData.push(
+                <span className='flex justify-between bg-[rgb(48,59,81)] bg-opacity-80'>
+                  <p className='pl-2'>&#8203;</p>
+                  <p className='pr-2'>&#8203;</p>
+                </span>
+              );
+              renderedData.push(
+                <span className='flex justify-between bg-[rgb(42,54,77)] bg-opacity-80'>
+                  <p className='pl-2'>{spec}</p>
+                  <p className='pr-2'>{value}</p>
+                </span>
+              );
+              i++;
+            }
+            else {
+              renderedData.push(
+                <span className='flex justify-between bg-[rgb(48,59,81)] bg-opacity-80'>
+                  <p className='pl-2'>{spec}</p>
+                  <p className='pr-2'>{value}</p>
+                </span>
+              );
+            }
+          }
+          i++;
         }
+
+
+          return(
+              <>
+                  {renderedData}
+              </>
+          );
+          
+      }
         
     }
 

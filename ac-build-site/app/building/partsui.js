@@ -39,7 +39,7 @@ export function PartsSelector({ currentMenu, setCurrentMenu, parts, setCurrentSe
                     <p>{prevMenu}</p>
                 </span>
 
-                <span className="w-[20%] text-lg">
+                <span className="w-[20%]">
                     <h1>{currentMenu}</h1>
                 </span>
                 
@@ -157,8 +157,8 @@ export function PartsBuilder({ currentSelect, currentMenu, currentPart, setCurre
         const part = JSON.parse(partData);
         
 
-        if(currentPart['name']===part['name'] || part['name'] === currentEquipped['name']) {
-            if(part['name'] === currentEquipped['name']) {
+        if(currentPart['name']===part['name'] || (currentEquipped && part['name'] === currentEquipped['name'])) {
+            if(currentEquipped && part['name'] === currentEquipped['name']) {
                 return(
                     <li key={index} className="relative text-center py-20 mx-[15%] my-2 bg-[rgb(0,80,100)]" onClick={() => setCurrentPart(part)}>
                         <p>{part['name']}</p>

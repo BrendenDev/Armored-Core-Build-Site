@@ -4,17 +4,17 @@ import { PartsSelector, PartsBuilder } from './partsui.js';
 function PartsOverview({ category, parts, handleClick, equippedParts }) { //category = unit, frame, inner, or expansion
 
     const partHeader = (
-        <div className="text-2x1 pb-[0.5%]"> 
+        <div className="pb-[0.5%]"> 
                 <h1 className="text-[rgb(200,200,200)] bg-[rgb(55,69,86)] pl-4">{category}</h1>
         </div>
     );
 
-    console.log(equippedParts);
+    //console.log(equippedParts);
 
     const partElements = parts.map( (part, index) => {
         return (
             <div key={index} className="my-[0.15rem] border-2 border-[rgb(52,64,80)] bg-[rgb(54,72,97)] hover:bg-[rgb(120,148,162)] overflow-auto no-scrollbar" onClick={() => handleClick(category, part)}> {/* change hover to gradient please */}
-                <div className="flex flex-col justify-center text-8x1">
+                <div className="flex flex-col justify-center">
                     <p className="pl-[7%] text-[rgb(112,126,148)]">{part}</p>
                     {equippedParts && equippedParts[part] ? 
                     (<p className="pl-[7%]">{equippedParts[part]['name']}</p>) : (<p className="pl-[7%]">(Nothing)</p>)}

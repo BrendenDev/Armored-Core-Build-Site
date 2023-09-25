@@ -47,10 +47,10 @@ export default function Home() {
   }, []);
 
   return (
-    <main className="flex h-screen flex-row items-start justify-around py-[5vh] font-agency-fb text-white no-text-cursor">
+    <main className="flex h-screen flex-row items-center justify-around font-agency-fb text-white no-text-cursor text-lg">
 
       {/*assembly container*/}
-      <div className="w-[25%] text-2x1 flex-col"> 
+      <div className="w-[25%] flex-col"> 
         <Assembly currentMenu={currentMenu} setCurrentMenu={setCurrentMenu} currentSelect={currentSelect} setCurrentSelect={setCurrentSelect} currentPart={currentPart} setCurrentPart={setCurrentPart} currentEquipped={currentEquipped} setCurrentEquipped={setCurrentEquipped} equippedParts={equippedParts}/>
       </div>
 
