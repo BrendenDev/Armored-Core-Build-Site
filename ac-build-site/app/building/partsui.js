@@ -1,5 +1,6 @@
 'use client'
-import {useState, useEffect} from 'react';
+import { useState, useEffect } from 'react';
+import Image from 'next/image';
 import { getPartQuery } from './queries.js';
 import { Corners } from '../ui/corners.js';
 
@@ -156,12 +157,13 @@ export function PartsBuilder({ currentSelect, currentMenu, currentPart, setCurre
     function Part({ partData, index, currentPart, setCurrentPart, currentEquipped }) {
         const part = JSON.parse(partData);
         
-
+        // if... Current Equipped | Selected | Not Equipped or Selected
         if(currentPart['name']===part['name'] || (currentEquipped && part['name'] === currentEquipped['name'])) {
             if(currentEquipped && part['name'] === currentEquipped['name']) {
                 return(
-                    <li key={index} className="relative text-center py-20 mx-[15%] my-2 bg-[rgb(0,80,100)]" onClick={() => setCurrentPart(part)}>
-                        <p>{part['name']}</p>
+                    <li key={index} className="relative text-center py-10 mx-[15%] my-2 bg-[rgb(0,80,100)] flex justify-center max-w-[100%]" onClick={() => setCurrentPart(part)}>
+                        {/* <p>{part['name']}</p> */}
+                        <Image src={'/test.jpg'} width={0} height={0} sizes={"100%"} className="w-[70%]"/>
                         <Equippable part={part} setCurrentEquipped={setCurrentEquipped}/>
                     </li>
                 );

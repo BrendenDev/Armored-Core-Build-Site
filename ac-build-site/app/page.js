@@ -64,7 +64,7 @@ export default function Home() {
         <FrameStats currentSelect={currentSelect} currentEquipped={currentEquipped} equippedParts={equippedParts} setEquippedParts={setEquippedParts}/>
       </div>
 
-      <div className='absolute top-[2vh] right-[17.5%] border-[0.1rem] border-white hover:cursor-pointer'>
+      <div className='absolute top-[2vh] right-[35%] border-[0.1rem] border-white hover:cursor-pointer'>
         <HomeButton setCurrentMenu={setCurrentMenu}/>
       </div>
     </main>

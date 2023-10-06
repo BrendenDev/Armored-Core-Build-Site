@@ -81,10 +81,11 @@ export function PartsStats({ currentMenu, currentSelect, currentPart, currentEqu
               }
   
               /*    PART STATS    */
-              else if(currentEquipped){ //if currentEquipped is a value
+              else if(currentEquipped){
                 const spec = convertToTitleCase(key);
                 var renderedValue;
                 
+                //pasring value from string
                 var parsedCurrentEquipped = currentEquipped[key];
                 var parsedValue = value;
                 if(typeof currentEquipped[key] === 'string') {
@@ -93,11 +94,12 @@ export function PartsStats({ currentMenu, currentSelect, currentPart, currentEqu
                 if(typeof value === 'string') {
                   parsedValue = parseAndMultiply(value);
                 }
-  
+                
+                //comparing stat value of equipped to selected
                 if(parsedCurrentEquipped > parsedValue) {
                   renderedValue=(<>{currentEquipped[key]} &#8594; <span className="text-red-600">{value}</span></>);
                 }
-                else if(parsedCurrentEquipped === parsedValue) {
+                else if(parsedCurrentEquipped === parsedValue || !parsedCurrentEquipped) {
                   renderedValue=value;
                 }
                 else {
